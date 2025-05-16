@@ -57,9 +57,11 @@ export default function GalleryPage() {
                     className="flex flex-col items-center justify-center"
                 >
 
-                    {/*<Image src={'/images/img-1.jpg'} alt="Gallery Image" width={400} height={200} className="rounded-lg shadow-lg mb-6" />*/}
+                    {/*<Image src={'/images/img-2.jpg'} alt="Gallery Image" width={400} height={200} className="rounded-lg shadow-lg mb-6" />*/}
+                    <Image src={'/images/img-3.jpg'} alt="Gallery Image" width={400} height={200} className="rounded-lg shadow-lg mb-6" />
+                    {/*<Image src={'/images/img-4.jpg'} alt="Gallery Image" width={400} height={200} className="rounded-lg shadow-lg mb-6" />*/}
 
-                    <ImageIcon className="h-16 w-16 text-blue-400 mb-4" />
+                    {/*<ImageIcon className="h-16 w-16 text-blue-400 mb-4" />*/}
 
                     {/*<h2 className="text-2xl font-semibold mb-4">Experience the Art of Photography</h2>*/}
                     {/* Animated Elements */}
