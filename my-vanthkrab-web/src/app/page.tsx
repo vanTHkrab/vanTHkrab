@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 import Image from 'next/image'
+import Footer from "@/components/footer";
+import {ImageIcon} from "lucide-react";
 
 
 export default function GalleryPage() {
@@ -55,10 +57,27 @@ export default function GalleryPage() {
                     className="flex flex-col items-center justify-center"
                 >
 
-                    <Image src={'/images/img-1.jpg'} alt="Gallery Image" width={400} height={200} className="rounded-lg shadow-lg mb-6" />
+                    {/*<Image src={'/images/img-1.jpg'} alt="Gallery Image" width={400} height={200} className="rounded-lg shadow-lg mb-6" />*/}
 
-                    <h2 className="text-2xl font-semibold mb-4">Experience the Art of Photography</h2>
+                    <ImageIcon className="h-16 w-16 text-blue-400 mb-4" />
+
+                    {/*<h2 className="text-2xl font-semibold mb-4">Experience the Art of Photography</h2>*/}
                     {/* Animated Elements */}
+
+                    <motion.div
+                        className="w-full max-w-2xl bg-slate-900 rounded-lg shadow-lg p-6 mb-8"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <h2 className="text-xl font-semibold mb-4">Page Under Construction</h2>
+                        <p className="text-gray-400 mb-4">
+                            This page is currently under construction. Stay tuned for updates!
+                        </p>
+
+                    </motion.div>
+
+
                     <div className="mt-16 relative w-full max-w-4xl h-32">
                         {[...Array(8)].map((_, i) => (
                             <motion.div
@@ -93,13 +112,7 @@ export default function GalleryPage() {
                 </motion.div>
             </main>
 
-            {/* Footer */}
-            <footer className="mt-12 py-8 border-t border-slate-700">
-                <div className="container mx-auto px-4 text-center text-slate-400 text-sm">
-                    <p>© 2025 Gallery Experience. All rights reserved.</p>
-                    <p className="mt-2">A premium visual journey coming soon.</p>
-                </div>
-            </footer>
+            <Footer/>
         </div>
     );
 }
