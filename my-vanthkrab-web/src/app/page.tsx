@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Mail, Calendar, Clock, ChevronRight, Construction, ImageIcon, Camera } from "lucide-react";
 
 import Image from 'next/image'
 
