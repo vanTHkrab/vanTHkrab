@@ -79,38 +79,6 @@ export default function GalleryPage() {
 
                     </motion.div>
 
-
-                    <div className="mt-16 relative w-full max-w-4xl h-32">
-                        {[...Array(8)].map((_, i) => (
-                            <motion.div
-                                key={i}
-                                className="absolute h-3 w-3 rounded-full bg-blue-400"
-                                initial={{
-                                    x: Math.random() * 100 - 50 + "%",
-                                    y: Math.random() * 100 - 50 + "%",
-                                    opacity: 0.2
-                                }}
-                                animate={{
-                                    x: [
-                                        Math.random() * 100 - 50 + "%",
-                                        Math.random() * 100 - 50 + "%",
-                                        Math.random() * 100 - 50 + "%"
-                                    ],
-                                    y: [
-                                        Math.random() * 100 - 50 + "%",
-                                        Math.random() * 100 - 50 + "%",
-                                        Math.random() * 100 - 50 + "%"
-                                    ],
-                                    opacity: [0.2, 0.8, 0.2]
-                                }}
-                                transition={{
-                                    duration: 8 + i * 2,
-                                    repeat: Infinity,
-                                    repeatType: "reverse"
-                                }}
-                            />
-                        ))}
-                    </div>
                 </motion.div>
             </main>
 
