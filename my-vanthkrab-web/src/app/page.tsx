@@ -2,10 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-
 import Image from 'next/image'
 import Footer from "@/components/footer";
-import {ImageIcon} from "lucide-react";
 
 
 export default function GalleryPage() {
