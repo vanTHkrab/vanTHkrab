@@ -58,11 +58,10 @@ export default function GalleryPage() {
                     {/*<Image src={'/images/img-2.jpg'} alt="Gallery Image" width={400} height={200} className="rounded-lg shadow-lg mb-6" />*/}
                     <Image src={'/images/img-3.jpg'} alt="Gallery Image" width={400} height={200} className="rounded-lg shadow-lg mb-6" />
                     {/*<Image src={'/images/img-4.jpg'} alt="Gallery Image" width={400} height={200} className="rounded-lg shadow-lg mb-6" />*/}
-
-                    {/*<ImageIcon className="h-16 w-16 text-blue-400 mb-4" />*/}
+                    <Image src={'/images/img-5.jpg'} alt="Gallery Image" width={400} height={200} className="rounded-lg shadow-lg mb-6" />
 
                     {/*<h2 className="text-2xl font-semibold mb-4">Experience the Art of Photography</h2>*/}
-                    {/* Animated Elements */}
+                     {/*Animated Elements */}
 
                     <motion.div
                         className="w-full max-w-2xl bg-slate-900 rounded-lg shadow-lg p-6 mb-8"
