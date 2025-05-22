@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Link from "next/link"; // Import Link
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next"
 
@@ -29,6 +30,20 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Analytics />
+        <nav style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          padding: '1rem', 
+          backgroundColor: '#f0f0f0', 
+          borderBottom: '1px solid #ddd' 
+        }}>
+          <Link href="/" style={{ marginRight: '2rem', color: '#333', textDecoration: 'none' }}>
+            Home
+          </Link>
+          <Link href="/chat" style={{ color: '#333', textDecoration: 'none' }}>
+            Chat
+          </Link>
+        </nav>
         {children}
       </body>
     </html>
