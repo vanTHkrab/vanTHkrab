@@ -14,20 +14,31 @@ export default auth((req) => {
 
 // Middleware to protect routes
 export function middleware(req: NextRequest) {
-    // // Check if the user is authenticated
-    // const isAuthenticated = req.cookies.get("next-auth.session-token") || req.cookies.get("next-auth.csrf-token")
-    //
-    // console.log(isAuthenticated)
-    //
-    // // If the user is not authenticated and trying to access a protected route, redirect to login
-    // if (!isAuthenticated && !req.nextUrl.pathname.startsWith("/login")) {
-    //     const loginUrl = new URL("/login", req.url)
-    //     return NextResponse.redirect(loginUrl)
-    // }
+    // Check if the user is authenticated
+    const hostname = req.headers.get('host') || ''
+    const subdomain = hostname.split('.')[0]
+
+    if (subdomain === 'admin') {
+        const url = req.nextUrl.clone()
+        url.pathname = `/admin${url.pathname}`
+        return NextResponse.rewrite(url)
+    }
+
+    if (subdomain === 'profile') {
+        const url = req.nextUrl.clone()
+        url.pathname = `/profile${url.pathname}`
+        return NextResponse.rewrite(url)
+    }
+
+    if (subdomain === 'user') {
+        const url = req.nextUrl.clone()
+        url.pathname = `/user${url.pathname}`
+        return NextResponse.rewrite(url)
+    }
 
     return NextResponse.next()
 }
 
 export const config = {
-    matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+    matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 }

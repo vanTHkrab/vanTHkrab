@@ -1,10 +1,4 @@
-export interface User {
-    id: string
-    name: string
-    email: string
-    image: string
-    password?: string
-}
+import React from "react";
 
 declare module "next-auth" {
     /**
@@ -51,4 +45,32 @@ declare module "next-auth/jwt" {
         /** OpenID ID Token */
         idToken?: string
     }
+}
+
+export interface DefaultSession {
+    user: {
+        /** The user's postal address. */
+        address?: string;
+        /** OpenID ID Token */
+        idToken?: string;
+        role?: "admin" | "user";
+    } & DefaultSession["user"];
+}
+
+export interface Feature {
+    icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+    title: string;
+    description: string;
+    color: string; // Tailwind CSS gradient color class
+}
+
+export interface FooterProps {
+    delay?: number;
+}
+
+export interface SocialLink {
+    icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+    label: string;
+    color: string;
+    href?: string;
 }
