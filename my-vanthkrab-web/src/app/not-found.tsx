@@ -1,16 +1,21 @@
 "use client";
-import { useState, useEffect } from 'react';
+import {useState, useEffect, JSX} from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { AlertCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
-// This is the 404 page component with a black theme
-export default function NotFound() {
+/**
+ * NotFound component for handling 404 errors in a Next.js application.
+ * It provides a visually appealing error page with animations and a countdown redirect.
+ *
+ * @returns {JSX.Element} The rendered NotFound component.
+ */
+
+export default function NotFound(): JSX.Element {
     const router = useRouter();
     const [countdown, setCountdown] = useState(10);
 
-    // Auto-redirect countdown effect
     useEffect(() => {
         if (countdown <= 0) {
             router.push('/');

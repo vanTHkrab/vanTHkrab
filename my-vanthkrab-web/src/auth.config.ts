@@ -5,7 +5,7 @@ import { saltAndHashPassword, verifyPassword } from "@/utils/password"
 import { ZodError } from "zod"
 import { signInSchema } from "@/lib/zod"
 import { getUser } from "@/utils/db";
-import type { User } from "@/types"
+
 
 export default {
     providers: [
