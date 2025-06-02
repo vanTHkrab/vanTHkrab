@@ -11,8 +11,8 @@ async function bootstrap() {
         preflightContinue: false, // Handle preflight requests automatically
         optionsSuccessStatus: 204, // Respond with 204 for successful preflight requests
     });
-  await app.listen(process.env.PORT ?? 8080);
+  await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap().then(
-    () => console.log(`Application is running on: http://localhost:${process.env.PORT ?? 8080}`)
+    () => console.log(`Application is running on: http://localhost:${process.env.PORT ?? 3000}`)
 );
