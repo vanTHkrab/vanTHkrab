@@ -12,6 +12,8 @@ export default auth((req) => {
     // }
 })
 
+//
+
 // Middleware to protect routes
 export function middleware(req: NextRequest) {
     // Check if the user is authenticated
