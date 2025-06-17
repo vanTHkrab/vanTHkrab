@@ -12,6 +12,7 @@ declare module "next-auth" {
         idToken?: string
         role?: "admin" | "user";
     }
+
     /**
      * The shape of the account object returned in the OAuth providers' `account` callback,
      * Usually contains information about the provider being used, like OAuth tokens (`access_token`, etc).
@@ -37,7 +38,7 @@ declare module "next-auth" {
 }
 
 // The `JWT` interface can be found in the `next-auth/jwt` submodule
-import { JWT } from "next-auth/jwt"
+import {JWT} from "next-auth/jwt"
 
 declare module "next-auth/jwt" {
     /** Returned by the `jwt` callback and `auth`, when using JWT sessions */
@@ -76,8 +77,18 @@ export interface SocialLink {
 }
 
 export interface Post {
-    id: number;
-    title: string;
-    content: string;
-    authorId: number;
+    id: number
+    title: string
+    content: string
+    published: boolean
+    author: User
+    authorId: number
+}
+
+export interface User {
+    id: number
+    email: string
+    name: string
+    password: string
+    posts: Post[]
 }

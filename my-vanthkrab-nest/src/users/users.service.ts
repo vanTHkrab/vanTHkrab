@@ -1,11 +1,10 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
-import {PrismaService} from '../prisma/prisma.service';
-import {Prisma, User} from "@prisma/client";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
+import { Prisma, User } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
-    constructor(private prisma: PrismaService) {
-    }
+    constructor(private prisma: PrismaService) {}
 
     async getUsers(params: {
         skip?: number;
@@ -14,15 +13,15 @@ export class UsersService {
         where?: Prisma.UserWhereInput;
         orderBy?: Prisma.UserOrderByWithRelationInput;
     }): Promise<User[]> {
-        const {skip, take, cursor, where, orderBy} = params;
+        const { skip, take, cursor, where, orderBy } = params;
         return this.prisma.user.findMany({
             skip,
             take,
             cursor,
             where,
-            orderBy: orderBy || {id: 'desc'}, // Default ordering
+            orderBy: orderBy || { id: 'desc' },
             include: {
-                posts: true, // Include related posts
+                posts: true,
             },
         });
     }
@@ -31,12 +30,27 @@ export class UsersService {
         const user = await this.prisma.user.findUnique({
             where: userWhereUniqueInput,
             include: {
-                posts: true, // Include related posts
+                posts: true,
             },
         });
 
         if (!user) {
-            throw new NotFoundException(`User with ID ${userWhereUniqueInput.id} not found`);
+            throw new NotFoundException(`User not found`);
+        }
+
+        return user;
+    }
+
+    async getUserByEmail(email: string): Promise<User | null> {
+        const user = await this.prisma.user.findUnique({
+            where: { email },
+            include: {
+                posts: true,
+            },
+        });
+
+        if (!user) {
+            throw new NotFoundException(`User with email ${email} not found`);
         }
 
         return user;
@@ -46,7 +60,7 @@ export class UsersService {
         return this.prisma.user.create({
             data,
             include: {
-                posts: true, // Include related posts
+                posts: true,
             },
         });
     }
@@ -54,12 +68,12 @@ export class UsersService {
     async deleteUser(userWhereUniqueInput: Prisma.UserWhereUniqueInput): Promise<User> {
         const user = await this.getUserById(userWhereUniqueInput);
         if (!user) {
-            throw new NotFoundException(`User with ID ${userWhereUniqueInput.id} not found`);
+            throw new NotFoundException(`User not found`);
         }
         return this.prisma.user.delete({
             where: userWhereUniqueInput,
             include: {
-                posts: true, // Include related posts
+                posts: true,
             },
         });
     }

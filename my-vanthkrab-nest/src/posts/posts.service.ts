@@ -22,7 +22,7 @@ export class PostsService {
                 author: {
                     select: {
                         id: true,
-                        name: true,
+                        username: true,
                         email: true,
                     },
                 },
@@ -59,7 +59,7 @@ export class PostsService {
                 author: {
                     select: {
                         id: true,
-                        name: true,
+                        username: true,
                         email: true,
                     },
                 },
@@ -79,7 +79,7 @@ export class PostsService {
                 author: {
                     select: {
                         id: true,
-                        name: true,
+                        username: true,
                         email: true,
                     },
                 },
@@ -108,7 +108,7 @@ export class PostsService {
                 author: {
                     select: {
                         id: true,
-                        name: true,
+                        username: true,
                         email: true,
                     },
                 },
