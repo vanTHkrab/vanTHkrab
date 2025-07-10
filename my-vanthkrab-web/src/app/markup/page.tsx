@@ -36,9 +36,6 @@ const ImageRectangleDrawer = () => {
     const imageRef = useRef<HTMLImageElement>(null);
     const folderInputRef = useRef<HTMLInputElement>(null);
 
-    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffa500', '#800080'];
-    const bgColors = ['#ffffff', '#000000', '#f0f0f0', '#e0e0e0', '#d0d0d0', '#c0c0c0', '#b0b0b0', '#a0a0a0'];
-
     const handleFileUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(event.target.files || []);
 
@@ -82,6 +79,40 @@ const ImageRectangleDrawer = () => {
                 : img
         ));
     }, [selectedImageId]);
+
+    const handleKeyDown = useCallback((event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+            if (isDrawing) {
+                setIsDrawing(false);
+                setCurrentRect(null);
+            } else if (isDragging) {
+                setIsDragging(false);
+                setDraggedRect(null);
+            }
+        }
+
+        if (event.key === 'Delete' || event.key === 'Backspace') {
+            if (selectedImageId && draggedRect) {
+                setImages(prev => prev.map(img =>
+                    img.id === selectedImageId
+                        ? { ...img, rectangles: img.rectangles.filter(r => r.id !== draggedRect) }
+                        : img
+                ));
+                setDraggedRect(null);
+            }
+        }
+        if (event.key === 'c' && event.ctrlKey) {
+            // Clear all rectangles
+            clearRectangles();
+        }
+    }, [isDrawing, isDragging]);
+
+    React.useEffect(() => {
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [handleKeyDown]);
 
     const getCanvasCoordinates = useCallback((event: React.MouseEvent<HTMLCanvasElement>) => {
         const canvas = canvasRef.current;
@@ -297,6 +328,8 @@ const ImageRectangleDrawer = () => {
     }, [images, selectedImageId]);
 
     const selectedImage = images.find(img => img.id === selectedImageId);
+    const textColor = selectedColor || '#ff0000';
+    const bgColor = selectedBgColor || '#ffffff';
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4">
@@ -403,22 +436,6 @@ const ImageRectangleDrawer = () => {
                             {selectedImage && (
                                 <div className="bg-gray-50 rounded-xl p-4">
                                     <h2 className="text-lg font-semibold text-gray-700 mb-4">Border Color</h2>
-                                    <div className="grid grid-cols-4 gap-2 mb-4">
-                                        {colors.map((color) => (
-                                            <motion.button
-                                                key={color}
-                                                whileHover={{ scale: 1.1 }}
-                                                whileTap={{ scale: 0.9 }}
-                                                onClick={() => setSelectedColor(color)}
-                                                className={`w-12 h-12 rounded-lg border-2 transition-all ${
-                                                    selectedColor === color
-                                                        ? 'border-gray-800 shadow-lg'
-                                                        : 'border-gray-300 hover:border-gray-400'
-                                                }`}
-                                                style={{ backgroundColor: color }}
-                                            />
-                                        ))}
-                                    </div>
 
                                     <div className="flex items-center gap-2 mb-4">
                                         <Palette className="w-4 h-4 text-gray-500" />
@@ -444,22 +461,6 @@ const ImageRectangleDrawer = () => {
                                     </div>
 
                                     <h3 className="text-md font-medium text-gray-700 mb-2">Background Color</h3>
-                                    <div className="grid grid-cols-4 gap-2 mb-4">
-                                        {bgColors.map((color) => (
-                                            <motion.button
-                                                key={color}
-                                                whileHover={{ scale: 1.1 }}
-                                                whileTap={{ scale: 0.9 }}
-                                                onClick={() => setSelectedBgColor(color)}
-                                                className={`w-12 h-12 rounded-lg border-2 transition-all ${
-                                                    selectedBgColor === color
-                                                        ? 'border-gray-800 shadow-lg'
-                                                        : 'border-gray-300 hover:border-gray-400'
-                                                }`}
-                                                style={{ backgroundColor: color }}
-                                            />
-                                        ))}
-                                    </div>
 
                                     <div className="flex items-center gap-2">
                                         <Palette className="w-4 h-4 text-gray-500" />
@@ -591,7 +592,10 @@ const ImageRectangleDrawer = () => {
                                     <div className="mt-4 text-sm text-gray-600">
                                         <p>Click and drag to draw squares • Click existing squares to move them</p>
                                         <p>Squares: {selectedImage.rectangles.length}</p>
+                                        <p>Selected Border Color: <span className="font-semibold" style={{ color: textColor }}>{textColor}</span></p>
+                                        <p>Selected Background Color: <span className="font-semibold" style={{ color: bgColor }}>{bgColor}</span></p>
                                     </div>
+
                                 </motion.div>
                             ) : (
                                 <div className="flex items-center justify-center h-96 bg-gray-50 rounded-xl border-2 border-dashed border-gray-300">
@@ -604,6 +608,12 @@ const ImageRectangleDrawer = () => {
                                     </div>
                                 </div>
                             )}
+
+                            <div className="mt-6 text-xs text-gray-500 text-center">
+                                <p>Press <span className="font-semibold">Escape</span> to cancel drawing or dragging</p>
+                                <p>Press <span className="font-semibold">Delete</span> to remove selected square</p>
+                                <p>Press <span className="font-semibold">Ctrl + C</span> to clear all squares</p>
+                            </div>
                         </div>
                     </div>
                 </motion.div>
