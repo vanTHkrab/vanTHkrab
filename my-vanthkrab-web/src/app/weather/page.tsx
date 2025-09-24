@@ -1,24 +1,43 @@
 "use client";
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {WeatherAction} from "@/actions/weatherAction";
 import {provinces, months, getCircularMonth, getProvinceName} from "@/utils/provinces";
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {Button} from "@/components/ui/button";
-import {Alert, AlertDescription} from "@/components/ui/alert";
-import {Badge} from "@/components/ui/badge";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@/components/ui/select';
+import {Button} from '@/components/ui/button';
+import {Alert, AlertDescription} from '@/components/ui/alert';
+import {Badge} from '@/components/ui/badge';
+import {Skeleton} from '@/components/ui/skeleton';
+import {Progress} from '@/components/ui/progress';
+import {Cloud, Sun, CloudRain, MapPin, Calendar, Zap, Info, RefreshCw, CheckCircle, XCircle} from 'lucide-react';
 
 interface PredictionResult {
     pred: number;
     prob: string;
 }
 
-const WeatherPage = () => {
+const ModernWeatherPage = () => {
     const [selectedProvince, setSelectedProvince] = useState<number | null>(null);
     const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
     const [prediction, setPrediction] = useState<PredictionResult | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [apiHealthy, setApiHealthy] = useState<boolean | null>(null);
+    const [progress, setProgress] = useState(0);
+
+    useEffect(() => {
+        const checkApiHealth = async () => {
+            try {
+                const response = await WeatherAction.getHealthData();
+                setApiHealthy(true);
+                console.log('API Health Check:', response);
+            } catch (err) {
+                setApiHealthy(false);
+                console.error('API Health Check Error:', err);
+            }
+        };
+        checkApiHealth();
+    }, []);
 
     const handlePredict = async () => {
         if (!selectedProvince || !selectedMonth) {
@@ -28,6 +47,19 @@ const WeatherPage = () => {
 
         setLoading(true);
         setError(null);
+        setProgress(0);
+
+        let interval: NodeJS.Timeout;
+        interval = setInterval(() => {
+            setProgress((oldProgress) => {
+                if (oldProgress >= 90) {
+                    clearInterval(interval);
+                    return oldProgress;
+                }
+                const diff = Math.random() * 10;
+                return Math.min(oldProgress + diff, 90);
+            });
+        }, 300);
 
         try {
             const circularMonth = getCircularMonth(selectedMonth);
@@ -38,263 +70,411 @@ const WeatherPage = () => {
             };
 
             const response = await WeatherAction.postWeatherData(data);
-            console.log('Prediction response:', response);
+
+            setProgress(100);
             setPrediction(response);
         } catch (err) {
             setError('เกิดข้อผิดพลาดในการทำนาย กรุณาลองใหม่อีกครั้ง');
             console.error('Prediction error:', err);
         } finally {
-            setLoading(false);
+            clearInterval(interval);
+            setTimeout(() => {
+                setLoading(false);
+                setProgress(0);
+            }, 300);
         }
     };
 
-    const getPredictionText = (pred: number) => {
-        return pred === 1 ? 'ฝนตก' : 'ไม่มีฝน';
-    };
-
-    const getPredictionColor = (pred: number) => {
-        return pred === 1 ? 'bg-blue-500' : 'bg-orange-500';
-    };
+    const getPredictionText = (pred: number) => pred === 1 ? 'ฝนตก' : 'ไม่มีฝน';
+    const getPredictionIcon = (pred: number) => pred === 1 ? CloudRain : Sun;
+    const getPredictionColor = (pred: number) => pred === 1 ? 'from-blue-500 to-blue-600' : 'from-orange-500 to-orange-600';
 
     return (
-        <div className="container mx-auto px-4 py-8 max-w-4xl">
-            <div className="text-center mb-8">
-                <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                    ระบบทำนายฝน
-                </h1>
-                <p className="text-lg text-gray-600">
-                    เลือกจังหวัดและเดือนเพื่อทำนายว่าจะมีฝนตกหรือไม่
-                </p>
-            </div>
+        <div
+            className="min-h-screen bg-black py-12 relative"
+            style={{
+                backgroundImage: `
+                    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)
+                `,
+                backgroundSize: '25px 25px',
+                backgroundAttachment: 'fixed',
+            }}>
+            {/* Container */}
+            <div className="container mx-auto px-4 py-8 max-w-7xl relative z-10">
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Form Section */}
-                <Card className="h-fit">
-                    <CardHeader>
-                        <CardTitle>เลือกข้อมูลการทำนาย</CardTitle>
-                        <CardDescription>
-                            กรุณาเลือกจังหวัดและเดือนที่ต้องการทำนาย
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-6">
-                        {/* Province Selection */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                จังหวัด
-                            </label>
-                            <Select
-                                value={selectedProvince?.toString()}
-                                onValueChange={(value) => setSelectedProvince(parseInt(value))}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="เลือกจังหวัด"/>
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {provinces.map((province) => (
-                                        <SelectItem key={province.id} value={province.id.toString()}>
-                                            {province.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
+                {/* Header Section */}
+                <div className="text-center mb-12">
+                    <div
+                        className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-white to-gray-200 rounded-2xl mb-6 shadow-xl border border-white">
+                        <Cloud className="w-10 h-10 text-black"/>
+                    </div>
+                    <h1 className="text-5xl font-bold bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent mb-4">
+                        ระบบทำนายฝน AI
+                    </h1>
+                    <p className="text-xl text-white max-w-2xl mx-auto">
+                        ใช้เทคนิคปัญญาประดิษฐ์ในการทำนายสภาพอากาศ เลือกจังหวัดและเดือนเพื่อได้รับการคาดการณ์ที่แม่นยำ
+                    </p>
+                </div>
 
-                        {/* Month Selection */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                เดือน
-                            </label>
-                            <Select
-                                value={selectedMonth?.toString()}
-                                onValueChange={(value) => setSelectedMonth(parseInt(value))}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="เลือกเดือน"/>
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {months.map((month) => (
-                                        <SelectItem key={month.value} value={month.value.toString()}>
-                                            {month.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
-
-                        {/* Selected Values Display */}
-                        {(selectedProvince || selectedMonth) && (
-                            <div className="p-3 bg-gray-50 rounded-lg">
-                                <h4 className="text-sm font-medium text-gray-700 mb-2">ข้อมูลที่เลือก:</h4>
-                                {selectedProvince && (
-                                    <p className="text-sm text-gray-600">
-                                        จังหวัด: <span
-                                        className="font-medium">{getProvinceName(selectedProvince)}</span>
-                                    </p>
-                                )}
-                                {selectedMonth && (
-                                    <p className="text-sm text-gray-600">
-                                        เดือน: <span
-                                        className="font-medium">{months.find(m => m.value === selectedMonth)?.name}</span>
-                                    </p>
-                                )}
-                            </div>
-                        )}
-
-                        {/* Error Display */}
-                        {error && (
-                            <Alert className="border-red-200 bg-red-50">
-                                <AlertDescription className="text-red-700">
-                                    {error}
+                {/* API Status Alert */}
+                {apiHealthy === null ? (
+                    <div className="mb-8 max-w-2xl mx-auto">
+                        <Skeleton className="h-12 w-full bg-white"/>
+                    </div>
+                ) : (
+                    <div className="mb-8 max-w-2xl mx-auto transition-opacity duration-500 opacity-100">
+                        {apiHealthy ? (
+                            <Alert className="border-white bg-white shadow-lg">
+                                <CheckCircle className="h-5 w-5 text-green-600"/>
+                                <AlertDescription className="text-black font-medium">
+                                    เชื่อมต่อกับ API ทำนายฝนเรียบร้อยแล้ว
+                                </AlertDescription>
+                            </Alert>
+                        ) : (
+                            <Alert className="border-white bg-white shadow-lg">
+                                <XCircle className="h-5 w-5 text-red-600"/>
+                                <AlertDescription className="text-black font-medium">
+                                    ไม่สามารถเชื่อมต่อกับ API ทำนายฝนได้ กรุณาลองใหม่อีกครั้งในภายหลัง
                                 </AlertDescription>
                             </Alert>
                         )}
+                    </div>
+                )}
 
-                        {/* Predict Button */}
-                        <Button
-                            onClick={handlePredict}
-                            disabled={loading || !selectedProvince || !selectedMonth}
-                            className="w-full"
-                            size="lg"
-                        >
-                            {loading ? (
-                                <div className="flex items-center">
+                <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+
+                    {/* Input Form */}
+                    <div className="xl:col-span-1">
+                        <Card className="shadow-xl bg-white border border-gray-200 h-fit">
+                            <CardHeader className="pb-6">
+                                <div className="flex items-center gap-3">
                                     <div
-                                        className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                                    กำลังทำนาย...
-                                </div>
-                            ) : (
-                                'ทำนายฝน'
-                            )}
-                        </Button>
-                    </CardContent>
-                </Card>
-
-                {/* Result Section */}
-                <Card className="h-fit">
-                    <CardHeader>
-                        <CardTitle>ผลการทำนาย</CardTitle>
-                        <CardDescription>
-                            ผลลัพธ์จากการทำนายฝน
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        {prediction ? (
-                            <div className="space-y-4">
-                                {/* Main Result */}
-                                <div
-                                    className="text-center p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg border">
-                                    <div className="mb-4">
-                                        <Badge
-                                            className={`${getPredictionColor(prediction.pred)} text-white text-lg px-4 py-2`}>
-                                            {getPredictionText(prediction.pred)}
-                                        </Badge>
+                                        className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
+                                        <MapPin className="w-5 h-5 text-white"/>
                                     </div>
-                                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                                        {prediction.prob ? `ความน่าจะเป็น: ${(parseFloat(prediction.prob) * 100).toFixed(1)}%` : ''}
-                                    </h3>
-                                    <p className="text-gray-600 mb-4">
-                                        {prediction.pred === 1 ? '🌧️ คาดการณ์ว่าจะมีฝนตก' : '☀️ คาดการณ์ว่าจะไม่มีฝน'}
-                                    </p>
+                                    <div>
+                                        <CardTitle className="text-slate-900">ข้อมูลการทำนาย</CardTitle>
+                                        <CardDescription className="text-slate-600">
+                                            เลือกตำแหน่งและเวลาที่ต้องการทำนาย
+                                        </CardDescription>
+                                    </div>
+                                </div>
+                            </CardHeader>
+                            <CardContent className="space-y-8">
 
-                                    {/* Probability Bar */}
-                                    {prediction.prob && (
-                                        <div className="mt-4">
-                                            <div className="flex justify-between text-sm text-gray-600 mb-1">
-                                                <span>ความน่าจะเป็นของฝน</span>
-                                                <span>{(parseFloat(prediction.prob) * 100).toFixed(1)}%</span>
-                                            </div>
-                                            <div className="w-full bg-gray-200 rounded-full h-3">
-                                                <div
-                                                    className={`h-3 rounded-full transition-all duration-500 ${
-                                                        prediction.pred === 1 ? 'bg-blue-500' : 'bg-orange-500'
-                                                    }`}
-                                                    style={{width: `${(parseFloat(prediction.prob) * 100).toFixed(1)}%`}}
-                                                ></div>
-                                            </div>
+                                {/* Province Selection */}
+                                <div className="space-y-3">
+                                    <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+                                        <MapPin className="w-4 h-4"/>
+                                        จังหวัด
+                                    </label>
+                                    <Select value={selectedProvince?.toString()}
+                                            onValueChange={(value) => setSelectedProvince(parseInt(value))}>
+                                        <SelectTrigger
+                                            className="h-12 border-slate-200 hover:border-blue-300 transition-colors">
+                                            <SelectValue placeholder="เลือกจังหวัด"/>
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {provinces.map((province) => (
+                                                <SelectItem key={province.id} value={province.id.toString()}
+                                                            className="hover:bg-blue-50">
+                                                    {province.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                {/* Month Selection */}
+                                <div className="space-y-3">
+                                    <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+                                        <Calendar className="w-4 h-4"/>
+                                        เดือน
+                                    </label>
+                                    <Select value={selectedMonth?.toString()}
+                                            onValueChange={(value) => setSelectedMonth(parseInt(value))}>
+                                        <SelectTrigger
+                                            className="h-12 border-slate-200 hover:border-blue-300 transition-colors">
+                                            <SelectValue placeholder="เลือกเดือน"/>
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {months.map((month) => (
+                                                <SelectItem key={month.value} value={month.value.toString()}
+                                                            className="hover:bg-blue-50">
+                                                    {month.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                {/* Selected Values Display */}
+                                {(selectedProvince || selectedMonth) && (
+                                    <div
+                                        className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
+                                        <h4 className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
+                                            <Info className="w-4 h-4"/>
+                                            ข้อมูลที่เลือก
+                                        </h4>
+                                        <div className="space-y-2">
+                                            {selectedProvince && (
+                                                <div className="flex items-center gap-2">
+                                                    <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                                                        {getProvinceName(selectedProvince)}
+                                                    </Badge>
+                                                </div>
+                                            )}
+                                            {selectedMonth && (
+                                                <div className="flex items-center gap-2">
+                                                    <Badge variant="secondary"
+                                                           className="bg-indigo-100 text-indigo-800">
+                                                        {months.find(m => m.value === selectedMonth)?.name}
+                                                    </Badge>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Error Display */}
+                                {error && (
+                                    <Alert className="border-red-200 bg-red-50">
+                                        <XCircle className="h-4 w-4 text-red-600"/>
+                                        <AlertDescription className="text-red-700">{error}</AlertDescription>
+                                    </Alert>
+                                )}
+
+                                {/* Progress Bar */}
+                                {loading && (
+                                    <div className="space-y-2">
+                                        <div className="flex items-center justify-between text-sm text-slate-600">
+                                            <span>กำลังประมวลผล...</span>
+                                            <span>{progress}%</span>
+                                        </div>
+                                        <Progress value={progress} className="h-2"/>
+                                    </div>
+                                )}
+
+                                {/* Predict Button */}
+                                <Button
+                                    onClick={handlePredict}
+                                    disabled={loading || !selectedProvince || !selectedMonth}
+                                    className="w-full h-12 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold shadow-lg transition-all duration-300 hover:shadow-xl"
+                                    size="lg"
+                                >
+                                    {loading ? (
+                                        <div className="flex items-center gap-2">
+                                            <RefreshCw className="w-4 h-4 animate-spin"/>
+                                            กำลังทำนาย...
+                                        </div>
+                                    ) : (
+                                        <div className="flex items-center gap-2">
+                                            <Zap className="w-4 h-4"/>
+                                            ทำนายฝน
                                         </div>
                                     )}
-                                </div>
+                                </Button>
+                            </CardContent>
+                        </Card>
+                    </div>
 
-                                {/* Technical Details */}
-                                <div className="p-4 bg-gray-50 rounded-lg">
-                                    <h4 className="font-medium text-gray-700 mb-2">รายละเอียดทางเทคนิค:</h4>
-                                    <div className="grid grid-cols-2 gap-2 text-sm text-gray-600">
-                                        <div>ค่าทำนาย: {prediction.pred}</div>
-                                        <div>จังหวัด: {selectedProvince ? getProvinceName(selectedProvince) : '-'}</div>
-                                        {prediction.prob && (
-                                            <div>ความน่าจะเป็น: {(parseFloat(prediction.prob) * 100).toFixed(1)}%</div>
-                                        )}
-                                        {selectedMonth && (
-                                            <>
-                                                <div>Month
-                                                    Sin: {getCircularMonth(selectedMonth).month_sin.toFixed(4)}</div>
-                                                <div>Month
-                                                    Cos: {getCircularMonth(selectedMonth).month_cos.toFixed(4)}</div>
-                                            </>
-                                        )}
+                    {/* Result Section */}
+                    <div className="xl:col-span-2">
+                        <Card className="shadow-xl bg-white border border-gray-200 h-fit">
+                            <CardHeader className="pb-6">
+                                <div className="flex items-center gap-3">
+                                    <div
+                                        className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-green-600 rounded-lg flex items-center justify-center">
+                                        <Cloud className="w-5 h-5 text-white"/>
+                                    </div>
+                                    <div>
+                                        <CardTitle className="text-slate-900">ผลการทำนาย</CardTitle>
+                                        <CardDescription className="text-slate-600">
+                                            ผลลัพธ์จากการวิเคราะห์ด้วย AI
+                                        </CardDescription>
                                     </div>
                                 </div>
+                            </CardHeader>
+                            <CardContent>
+                                {prediction ? (
+                                    <div className="space-y-6">
 
-                                {/* Reset Button */}
-                                <Button
-                                    variant="outline"
-                                    onClick={() => {
-                                        setPrediction(null);
-                                        setSelectedProvince(null);
-                                        setSelectedMonth(null);
-                                        setError(null);
-                                    }}
-                                    className="w-full"
-                                >
-                                    ทำนายใหม่
-                                </Button>
-                            </div>
-                        ) : (
-                            <div className="text-center py-12">
-                                <div className="text-gray-400 mb-4">
-                                    <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24"
-                                         stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                              d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
-                                    </svg>
-                                </div>
-                                <p className="text-gray-500">
-                                    เลือกจังหวัดและเดือนเพื่อเริ่มทำนาย
-                                </p>
-                            </div>
-                        )}
-                    </CardContent>
-                </Card>
-            </div>
+                                        {/* Main Result Card */}
+                                        <div
+                                            className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${getPredictionColor(prediction.pred)} p-8 text-white shadow-2xl`}>
+                                            <div className="relative z-10">
+                                                <div className="flex items-center justify-center mb-6">
+                                                    {React.createElement(getPredictionIcon(prediction.pred), {
+                                                        className: "w-16 h-16 text-white drop-shadow-lg"
+                                                    })}
+                                                </div>
+                                                <h3 className="text-4xl font-bold text-center mb-4">
+                                                    {getPredictionText(prediction.pred)}
+                                                </h3>
+                                                <p className="text-xl text-center text-white/90 mb-6">
+                                                    {prediction.pred === 1 ? 'คาดการณ์ว่าจะมีฝนตก' : 'คาดการณ์ว่าจะไม่มีฝน'}
+                                                </p>
 
-            {/* Information Section */}
-            <Card className="mt-8">
-                <CardHeader>
-                    <CardTitle>เกี่ยวกับระบบทำนายฝน</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <h4 className="font-medium text-gray-900 mb-2">วิธีการทำงาน</h4>
-                            <ul className="text-sm text-gray-600 space-y-1">
-                                <li>• ใช้ข้อมูลจาก {provinces.length} จังหวัดทั่วประเทศไทย</li>
-                                <li>• แปลงเดือนเป็นค่า Sin และ Cos เพื่อจำลองรูปแบบวงกลม</li>
-                                <li>• ทำนายผลลัพธ์เป็น 0 (ไม่มีฝน) หรือ 1 (ฝนตก)</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 className="font-medium text-gray-900 mb-2">ข้อมูลที่ใช้</h4>
-                            <ul className="text-sm text-gray-600 space-y-1">
-                                <li>• รหัสจังหวัด (PROV_ID)</li>
-                                <li>• ค่า Sine ของเดือน (month_sin)</li>
-                                <li>• ค่า Cosine ของเดือน (month_cos)</li>
-                            </ul>
-                        </div>
+                                                {/* Confidence Level */}
+                                                {prediction.prob && (
+                                                    <div className="bg-white/20 rounded-xl p-4 backdrop-blur-sm">
+                                                        <div className="flex justify-between items-center mb-2">
+                                                            <span className="text-white/90">ความเชื่อมั่น</span>
+                                                            <span
+                                                                className="text-2xl font-bold">{(parseFloat(prediction.prob) * 100).toFixed(1)}%</span>
+                                                        </div>
+                                                        <div className="w-full bg-white/20 rounded-full h-3">
+                                                            <div
+                                                                className="h-3 bg-white rounded-full transition-all duration-1000 ease-out"
+                                                                style={{width: `${parseFloat(prediction.prob) * 100}%`}}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            {/* Background Pattern */}
+                                            <div className="absolute inset-0 opacity-10">
+                                                <div
+                                                    className="absolute top-0 right-0 w-32 h-32 rounded-full bg-white transform translate-x-16 -translate-y-16"/>
+                                                <div
+                                                    className="absolute bottom-0 left-0 w-24 h-24 rounded-full bg-white transform -translate-x-12 translate-y-12"/>
+                                            </div>
+                                        </div>
+
+                                        {/* Technical Details */}
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <Card className="bg-slate-50 border-slate-200">
+                                                <CardContent className="p-4">
+                                                    <h4 className="font-semibold text-slate-700 mb-3">ข้อมูลการทำนาย</h4>
+                                                    <div className="space-y-2 text-sm">
+                                                        <div className="flex justify-between">
+                                                            <span className="text-slate-600">จังหวัด:</span>
+                                                            <span
+                                                                className="font-medium text-slate-900">{getProvinceName(selectedProvince!)}</span>
+                                                        </div>
+                                                        <div className="flex justify-between">
+                                                            <span className="text-slate-600">เดือน:</span>
+                                                            <span
+                                                                className="font-medium text-slate-900">{months.find(m => m.value === selectedMonth)?.name}</span>
+                                                        </div>
+                                                    </div>
+                                                </CardContent>
+                                            </Card>
+
+                                            <Card className="bg-slate-50 border-slate-200">
+                                                <CardContent className="p-4">
+                                                    <h4 className="font-semibold text-slate-700 mb-3">ค่าทางเทคนิค</h4>
+                                                    <div className="space-y-2 text-sm">
+                                                        <div className="flex justify-between">
+                                                            <span className="text-slate-600">Month Sin:</span>
+                                                            <span
+                                                                className="font-mono text-slate-900">{getCircularMonth(selectedMonth!).month_sin.toFixed(4)}</span>
+                                                        </div>
+                                                        <div className="flex justify-between">
+                                                            <span className="text-slate-600">Month Cos:</span>
+                                                            <span
+                                                                className="font-mono text-slate-900">{getCircularMonth(selectedMonth!).month_cos.toFixed(4)}</span>
+                                                        </div>
+                                                    </div>
+                                                </CardContent>
+                                            </Card>
+                                        </div>
+
+                                        {/* Reset Button */}
+                                        <Button
+                                            variant="outline"
+                                            onClick={() => {
+                                                setPrediction(null);
+                                                setSelectedProvince(null);
+                                                setSelectedMonth(null);
+                                                setError(null);
+                                            }}
+                                            className="w-full h-12 border-slate-300 hover:bg-slate-50 transition-all duration-300"
+                                        >
+                                            <RefreshCw className="w-4 h-4 mr-2"/>
+                                            ทำนายใหม่
+                                        </Button>
+                                    </div>
+                                ) : (
+                                    <div className="text-center py-16">
+                                        <div
+                                            className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                                            <Cloud className="w-12 h-12 text-slate-400"/>
+                                        </div>
+                                        <h3 className="text-xl font-semibold text-slate-700 mb-2">พร้อมทำนายสภาพอากาศ</h3>
+                                        <p className="text-slate-500 max-w-md mx-auto">
+                                            เลือกจังหวัดและเดือนจากแบบฟอร์มด้านซ้าย เพื่อเริ่มการทำนายด้วย AI
+                                        </p>
+                                    </div>
+                                )}
+                            </CardContent>
+                        </Card>
                     </div>
-                </CardContent>
-            </Card>
+                </div>
+
+                {/* Information Section */}
+                <div className="mt-12">
+                    <Card className="shadow-xl bg-white border border-gray-200">
+                        <CardHeader>
+                            <div className="flex items-center gap-3">
+                                <div
+                                    className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center">
+                                    <Info className="w-5 h-5 text-white"/>
+                                </div>
+                                <div>
+                                    <CardTitle className="text-slate-900">เกี่ยวกับระบบทำนายฝน AI</CardTitle>
+                                    <CardDescription className="text-slate-600">
+                                        เทคโนลยีและวิธีการทำงานของระบบ
+                                    </CardDescription>
+                                </div>
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                <div className="space-y-3">
+                                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                        <MapPin className="w-6 h-6 text-blue-600"/>
+                                    </div>
+                                    <h4 className="font-semibold text-slate-900">ข้อมูลครอบคลุม</h4>
+                                    <ul className="text-sm text-slate-600 space-y-1">
+                                        <li>• ใช้ข้อมูลจาก {provinces.length} จังหวัดทั่วประเทศไทย</li>
+                                        <li>• ข้อมูลสภาพอากาศหลายปีย้อนหลัง</li>
+                                        <li>• อัพเดทข้อมูลอย่างต่อเนื่อง</li>
+                                    </ul>
+                                </div>
+                                <div className="space-y-3">
+                                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                        <Zap className="w-6 h-6 text-green-600"/>
+                                    </div>
+                                    <h4 className="font-semibold text-slate-900">เทคโนลยี AI</h4>
+                                    <ul className="text-sm text-slate-600 space-y-1">
+                                        <li>• แปลงเดือนเป็นค่า Sin และ Cos</li>
+                                        <li>• จำลองรูปแบบวงกลมของฤดูกาล</li>
+                                        <li>• โมเดลการเรียนรู้เชิงลึก</li>
+                                    </ul>
+                                </div>
+                                <div className="space-y-3">
+                                    <div
+                                        className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                        <Cloud className="w-6 h-6 text-purple-600"/>
+                                    </div>
+                                    <h4 className="font-semibold text-slate-900">ผลลัพธ์</h4>
+                                    <ul className="text-sm text-slate-600 space-y-1">
+                                        <li>• ทำนายผลลัพธ์เป็น 0 (ไม่มีฝน) หรือ 1 (ฝนตก)</li>
+                                        <li>• ระดับความเชื่อมั่นในการทำนาย</li>
+                                        <li>• ข้อมูลทางเทคนิคประกอบ</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
         </div>
     );
 };
 
-export default WeatherPage;
+export default ModernWeatherPage;
+
