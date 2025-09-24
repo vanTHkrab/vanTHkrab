@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  nextjs-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    volumes:
+      # Mount source code for development (optional)
+      - .:/app
+      - /app/node_modules
+      - nextjs_data:/app/.next
+    restart: unless-stopped
+
+volumes:
+  nextjs_data:

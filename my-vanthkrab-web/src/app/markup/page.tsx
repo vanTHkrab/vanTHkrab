@@ -622,4 +622,4 @@ const ImageRectangleDrawer = () => {
     );
 };
 
-export default ImageRectangleDrawer;
+export default ImageRectangleDrawer
