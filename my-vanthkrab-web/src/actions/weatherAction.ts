@@ -11,7 +11,7 @@ interface PostWeatherDataResponse {
 
 export class WeatherAction {
     static readonly type: string = 'weather';
-    static readonly url: string = process.env.WEATHER_API_URL || 'http://localhost:8000';
+    static readonly url: string = process.env.NEXT_PUBLIC_WEATHER_API_URL || 'http://localhost:8000';
     static async getHealthData() {
         const res = await fetch(`${this.url}`, {
             method: 'GET',
