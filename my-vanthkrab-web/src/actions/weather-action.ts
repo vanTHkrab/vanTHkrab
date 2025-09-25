@@ -4,8 +4,21 @@ interface PostWeatherData {
 }
 
 interface PostWeatherDataResponse {
-    pred: number;
-    prob: string;
+    prediction: number;
+    probability: number | null;
+    province: {
+        id: number;
+        name: string;
+    };
+    month: {
+        id: number;
+        name: string;
+    };
+    features_used: {
+        province_id: number;
+        month_sin: number;
+        month_cos: number;
+    };
 }
 
 export class WeatherAction {

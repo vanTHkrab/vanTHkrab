@@ -12,8 +12,21 @@ import { ProvinceSelector, useProvinceName } from '@/components/weather/province
 import { MonthSelector, useMonthName } from '@/components/weather/month-selector';
 
 interface PredictionResult {
-    pred: number;
-    prob: string;
+    prediction: number;
+    probability: number | null;
+    province: {
+        id: number;
+        name: string;
+    };
+    month: {
+        id: number;
+        name: string;
+    };
+    features_used: {
+        province_id: number;
+        month_sin: number;
+        month_cos: number;
+    };
 }
 
 const ModernWeatherPage = () => {
@@ -86,9 +99,9 @@ const ModernWeatherPage = () => {
         }
     };
 
-    const getPredictionText = (pred: number) => pred === 1 ? 'ฝนตก' : 'ไม่มีฝน';
-    const getPredictionIcon = (pred: number) => pred === 1 ? CloudRain : Sun;
-    const getPredictionColor = (pred: number) => pred === 1 ? 'from-blue-500 to-blue-600' : 'from-orange-500 to-orange-600';
+    const getPredictionText = (prediction: number) => prediction === 1 ? 'ฝนตก' : 'ไม่มีฝน';
+    const getPredictionIcon = (prediction: number) => prediction === 1 ? CloudRain : Sun;
+    const getPredictionColor = (prediction: number) => prediction === 1 ? 'from-blue-500 to-blue-600' : 'from-orange-500 to-orange-600';
 
     return (
         <div
@@ -271,36 +284,37 @@ const ModernWeatherPage = () => {
 
                                         {/* Main Result Card */}
                                         <div
-                                            className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${getPredictionColor(prediction.pred)} p-8 text-white shadow-2xl`}>
+                                            className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${getPredictionColor(prediction.prediction)} p-8 text-white shadow-2xl`}>
                                             <div className="relative z-10">
                                                 <div className="flex items-center justify-center mb-6">
-                                                    {React.createElement(getPredictionIcon(prediction.pred), {
+                                                    {React.createElement(getPredictionIcon(prediction.prediction), {
                                                         className: "w-16 h-16 text-white drop-shadow-lg"
                                                     })}
                                                 </div>
                                                 <h3 className="text-4xl font-bold text-center mb-4">
-                                                    {getPredictionText(prediction.pred)}
+                                                    {getPredictionText(prediction.prediction)}
                                                 </h3>
                                                 <p className="text-xl text-center text-white/90 mb-6">
-                                                    {prediction.pred === 1 ? 'คาดการณ์ว่าจะมีฝนตก' : 'คาดการณ์ว่าจะไม่มีฝน'}
+                                                    {prediction.prediction === 1 ? 'คาดการณ์ว่าจะมีฝนตก' : 'คาดการณ์ว่าจะไม่มีฝน'}
                                                 </p>
 
                                                 {/* Confidence Level */}
-                                                {prediction.prob && (
+                                                {prediction.probability !== null && (
                                                     <div className="bg-white/20 rounded-xl p-4 backdrop-blur-sm">
                                                         <div className="flex justify-between items-center mb-2">
                                                             <span className="text-white/90">ความเชื่อมั่น</span>
                                                             <span
-                                                                className="text-2xl font-bold">{(parseFloat(prediction.prob) * 100).toFixed(1)}%</span>
+                                                                className="text-2xl font-bold">{(prediction.probability * 100).toFixed(1)}%</span>
                                                         </div>
                                                         <div className="w-full bg-white/20 rounded-full h-3">
                                                             <div
                                                                 className="h-3 bg-white rounded-full transition-all duration-1000 ease-out"
-                                                                style={{width: `${parseFloat(prediction.prob) * 100}%`}}
+                                                                style={{width: `${prediction.probability * 100}%`}}
                                                             />
                                                         </div>
                                                     </div>
                                                 )}
+
                                             </div>
 
                                             {/* Background Pattern */}
