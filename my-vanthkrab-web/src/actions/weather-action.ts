@@ -1,7 +1,6 @@
 interface PostWeatherData {
     PROV_ID: number;
-    month_sin: number;
-    month_cos: number;
+    month_id: number;
 }
 
 interface PostWeatherDataResponse {
@@ -13,7 +12,27 @@ export class WeatherAction {
     static readonly type: string = 'weather';
     static readonly url: string = process.env.NEXT_PUBLIC_WEATHER_API_URL || 'http://localhost:8000';
     static async getHealthData() {
-        const res = await fetch(`${this.url}`, {
+        const res = await fetch(`${this.url}/api/heath`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return await res.json();
+    }
+
+    static async getProvinceData() {
+        const res = await fetch(`${this.url}/api/provinces`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return await res.json();
+    }
+
+    static async getMonthData() {
+        const res = await fetch(`${this.url}/api/months`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -23,7 +42,7 @@ export class WeatherAction {
     }
 
     static async postWeatherData(data: PostWeatherData): Promise<PostWeatherDataResponse> {
-        const res = await fetch(`${this.url}/predict`, {
+        const res = await fetch(`${this.url}/api/predict`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -1,15 +1,15 @@
 "use client";
 import React, {useState, useEffect} from 'react';
-import {WeatherAction} from "@/actions/weatherAction";
-import {provinces, months, getCircularMonth, getProvinceName} from "@/utils/provinces";
+import {WeatherAction} from "@/actions/weather-action";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@/components/ui/select';
 import {Button} from '@/components/ui/button';
 import {Alert, AlertDescription} from '@/components/ui/alert';
 import {Badge} from '@/components/ui/badge';
 import {Skeleton} from '@/components/ui/skeleton';
 import {Progress} from '@/components/ui/progress';
-import {Cloud, Sun, CloudRain, MapPin, Calendar, Zap, Info, RefreshCw, CheckCircle, XCircle} from 'lucide-react';
+import {Cloud, Sun, CloudRain, MapPin, Zap, Info, RefreshCw, CheckCircle, XCircle} from 'lucide-react';
+import { ProvinceSelector, useProvinceName } from '@/components/weather/province-selector';
+import { MonthSelector, useMonthName } from '@/components/weather/month-selector';
 
 interface PredictionResult {
     pred: number;
@@ -24,6 +24,9 @@ const ModernWeatherPage = () => {
     const [error, setError] = useState<string | null>(null);
     const [apiHealthy, setApiHealthy] = useState<boolean | null>(null);
     const [progress, setProgress] = useState(0);
+
+    const provinceName = useProvinceName(selectedProvince);
+    const monthName = useMonthName(selectedMonth);
 
     useEffect(() => {
         const checkApiHealth = async () => {
@@ -62,11 +65,9 @@ const ModernWeatherPage = () => {
         }, 300);
 
         try {
-            const circularMonth = getCircularMonth(selectedMonth);
             const data = {
                 PROV_ID: selectedProvince,
-                month_sin: circularMonth.month_sin,
-                month_cos: circularMonth.month_cos,
+                month_id: selectedMonth,
             };
 
             const response = await WeatherAction.postWeatherData(data);
@@ -164,50 +165,18 @@ const ModernWeatherPage = () => {
                             <CardContent className="space-y-8">
 
                                 {/* Province Selection */}
-                                <div className="space-y-3">
-                                    <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
-                                        <MapPin className="w-4 h-4"/>
-                                        จังหวัด
-                                    </label>
-                                    <Select value={selectedProvince?.toString()}
-                                            onValueChange={(value) => setSelectedProvince(parseInt(value))}>
-                                        <SelectTrigger
-                                            className="h-12 border-slate-200 hover:border-blue-300 transition-colors">
-                                            <SelectValue placeholder="เลือกจังหวัด"/>
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {provinces.map((province) => (
-                                                <SelectItem key={province.id} value={province.id.toString()}
-                                                            className="hover:bg-blue-50">
-                                                    {province.name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                </div>
+                                <ProvinceSelector
+                                    value={selectedProvince || undefined}
+                                    onValueChange={setSelectedProvince}
+                                    disabled={loading}
+                                />
 
                                 {/* Month Selection */}
-                                <div className="space-y-3">
-                                    <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
-                                        <Calendar className="w-4 h-4"/>
-                                        เดือน
-                                    </label>
-                                    <Select value={selectedMonth?.toString()}
-                                            onValueChange={(value) => setSelectedMonth(parseInt(value))}>
-                                        <SelectTrigger
-                                            className="h-12 border-slate-200 hover:border-blue-300 transition-colors">
-                                            <SelectValue placeholder="เลือกเดือน"/>
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {months.map((month) => (
-                                                <SelectItem key={month.value} value={month.value.toString()}
-                                                            className="hover:bg-blue-50">
-                                                    {month.name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                </div>
+                                <MonthSelector
+                                    value={selectedMonth || undefined}
+                                    onValueChange={setSelectedMonth}
+                                    disabled={loading}
+                                />
 
                                 {/* Selected Values Display */}
                                 {(selectedProvince || selectedMonth) && (
@@ -218,18 +187,18 @@ const ModernWeatherPage = () => {
                                             ข้อมูลที่เลือก
                                         </h4>
                                         <div className="space-y-2">
-                                            {selectedProvince && (
+                                            {selectedProvince && provinceName && (
                                                 <div className="flex items-center gap-2">
                                                     <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                                                        {getProvinceName(selectedProvince)}
+                                                        {provinceName}
                                                     </Badge>
                                                 </div>
                                             )}
-                                            {selectedMonth && (
+                                            {selectedMonth && monthName && (
                                                 <div className="flex items-center gap-2">
                                                     <Badge variant="secondary"
                                                            className="bg-indigo-100 text-indigo-800">
-                                                        {months.find(m => m.value === selectedMonth)?.name}
+                                                        {monthName}
                                                     </Badge>
                                                 </div>
                                             )}
@@ -250,7 +219,7 @@ const ModernWeatherPage = () => {
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between text-sm text-slate-600">
                                             <span>กำลังประมวลผล...</span>
-                                            <span>{progress}%</span>
+                                            <span>{Math.round(progress)}%</span>
                                         </div>
                                         <Progress value={progress} className="h-2"/>
                                     </div>
@@ -351,13 +320,11 @@ const ModernWeatherPage = () => {
                                                     <div className="space-y-2 text-sm">
                                                         <div className="flex justify-between">
                                                             <span className="text-slate-600">จังหวัด:</span>
-                                                            <span
-                                                                className="font-medium text-slate-900">{getProvinceName(selectedProvince!)}</span>
+                                                            <span className="font-medium text-slate-900">{provinceName}</span>
                                                         </div>
                                                         <div className="flex justify-between">
                                                             <span className="text-slate-600">เดือน:</span>
-                                                            <span
-                                                                className="font-medium text-slate-900">{months.find(m => m.value === selectedMonth)?.name}</span>
+                                                            <span className="font-medium text-slate-900">{monthName}</span>
                                                         </div>
                                                     </div>
                                                 </CardContent>
@@ -368,14 +335,12 @@ const ModernWeatherPage = () => {
                                                     <h4 className="font-semibold text-slate-700 mb-3">ค่าทางเทคนิค</h4>
                                                     <div className="space-y-2 text-sm">
                                                         <div className="flex justify-between">
-                                                            <span className="text-slate-600">Month Sin:</span>
-                                                            <span
-                                                                className="font-mono text-slate-900">{getCircularMonth(selectedMonth!).month_sin.toFixed(4)}</span>
+                                                            <span className="text-slate-600">Province ID:</span>
+                                                            <span className="font-mono text-slate-900">{selectedProvince}</span>
                                                         </div>
                                                         <div className="flex justify-between">
-                                                            <span className="text-slate-600">Month Cos:</span>
-                                                            <span
-                                                                className="font-mono text-slate-900">{getCircularMonth(selectedMonth!).month_cos.toFixed(4)}</span>
+                                                            <span className="text-slate-600">Month ID:</span>
+                                                            <span className="font-mono text-slate-900">{selectedMonth}</span>
                                                         </div>
                                                     </div>
                                                 </CardContent>
@@ -439,7 +404,7 @@ const ModernWeatherPage = () => {
                                     </div>
                                     <h4 className="font-semibold text-slate-900">ข้อมูลครอบคลุม</h4>
                                     <ul className="text-sm text-slate-600 space-y-1">
-                                        <li>• ใช้ข้อมูลจาก {provinces.length} จังหวัดทั่วประเทศไทย</li>
+                                        <li>• ใช้ข้อมูลจากจังหวัดทั่วประเทศไทย</li>
                                         <li>• ข้อมูลสภาพอากาศหลายปีย้อนหลัง</li>
                                         <li>• อัพเดทข้อมูลอย่างต่อเนื่อง</li>
                                     </ul>
@@ -450,9 +415,9 @@ const ModernWeatherPage = () => {
                                     </div>
                                     <h4 className="font-semibold text-slate-900">เทคโนลยี AI</h4>
                                     <ul className="text-sm text-slate-600 space-y-1">
-                                        <li>• แปลงเดือนเป็นค่า Sin และ Cos</li>
-                                        <li>• จำลองรูปแบบวงกลมของฤดูกาล</li>
-                                        <li>• โมเดลการเรียนรู้เชิงลึก</li>
+                                        <li>• วิเคราะห์รูปแบบข้อมูลทางสถิติ</li>
+                                        <li>• จำลองรูปแบบเชิงฤดูกาล</li>
+                                        <li>• โมเดลการเรียนรู้ขั้นสูง</li>
                                     </ul>
                                 </div>
                                 <div className="space-y-3">
@@ -477,4 +442,3 @@ const ModernWeatherPage = () => {
 };
 
 export default ModernWeatherPage;
-
