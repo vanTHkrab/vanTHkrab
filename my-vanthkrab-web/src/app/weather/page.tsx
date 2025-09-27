@@ -171,14 +171,14 @@ const ModernWeatherPage = () => {
                                 {/* Province Selection */}
                                 <ProvinceSelector
                                     value={selectedProvince || undefined}
-                                    onValueChange={setSelectedProvince}
+                                    onValueChangeAction={setSelectedProvince}
                                     disabled={loading}
                                 />
 
                                 {/* Month Selection */}
                                 <MonthSelector
                                     value={selectedMonth || undefined}
-                                    onValueChange={setSelectedMonth}
+                                    onValueChangeAction={setSelectedMonth}
                                     disabled={loading}
                                 />
 
