@@ -1,9 +1,10 @@
 "use client";
 import React, {useState, useEffect} from 'react';
 import {
-    WeatherAction,
     type PostWeatherDataResponse as PredictionResult,
-    type PostWeatherData
+    type PostWeatherData,
+    getHealthData,
+    postWeatherData
 } from "@/actions/weather-action";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Button} from '@/components/ui/button';
@@ -30,7 +31,7 @@ const ModernWeatherPage = () => {
     useEffect(() => {
         const checkApiHealth = async () => {
             try {
-                const response = await WeatherAction.getHealthData();
+                const response = await getHealthData();
                 setApiHealthy(true);
                 console.log('API Health Check:', response);
             } catch (err) {
@@ -69,7 +70,7 @@ const ModernWeatherPage = () => {
                 month_id: selectedMonth,
             };
 
-            const response = await WeatherAction.postWeatherData(data);
+            const response = await postWeatherData(data);
 
             setProgress(100);
             setPrediction(response);

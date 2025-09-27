@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { WeatherAction } from '@/actions/weather-action';
+import { getMonthData } from '@/actions/weather-action';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -31,7 +31,7 @@ export const MonthSelector: React.FC<MonthSelectorProps> = ({
     } = useQuery({
         queryKey: ['months'],
         queryFn: async () => {
-            const response = await WeatherAction.getMonthData();
+            const response = await getMonthData();
             console.log('Month API Response:', response); // Debug log
             return response;
         },
@@ -147,7 +147,7 @@ export const useMonthName = (monthValue: number | null) => {
     const { data: monthsResponse } = useQuery({
         queryKey: ['months'],
         queryFn: async () => {
-            return await WeatherAction.getMonthData();
+            return await getMonthData();
         },
         staleTime: 1000 * 60 * 60, // 1 hour
     });

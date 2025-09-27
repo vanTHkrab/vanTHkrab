@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { WeatherAction } from '@/actions/weather-action';
+import { getProvinceData } from '@/actions/weather-action';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -31,7 +31,7 @@ export const ProvinceSelector: React.FC<ProvinceSelectorProps> = ({
     } = useQuery({
         queryKey: ['provinces'],
         queryFn: async () => {
-            const response = await WeatherAction.getProvinceData();
+            const response = await getProvinceData();
             console.log('Province API Response:', response); // Debug log
             return response;
         },
@@ -147,7 +147,7 @@ export const useProvinceName = (provinceId: number | null) => {
     const { data: provincesResponse } = useQuery({
         queryKey: ['provinces'],
         queryFn: async () => {
-            return await WeatherAction.getProvinceData();
+            return await getProvinceData();
         },
         staleTime: 1000 * 60 * 60, // 1 hour
     });

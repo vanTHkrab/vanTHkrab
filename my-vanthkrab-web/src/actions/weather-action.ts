@@ -1,3 +1,5 @@
+"use server";
+
 export interface PostWeatherData {
     PROV_ID: number;
     month_id: number;
@@ -8,64 +10,47 @@ export interface PostWeatherDataResponse {
     probability: number | null;
     province: {
         id: number;
-        name: string;
+        name: string
     };
     month: {
         id: number;
-        name: string;
+        name: string
     };
     features_used: {
         province_id: number;
         month_sin: number;
-        month_cos: number;
+        month_cos: number
     };
 }
 
-export class WeatherAction {
-    static readonly type: string = 'weather';
-    static readonly url: string = process.env.NEXT_PUBLIC_WEATHER_API_URL || 'http://localhost:8000';
-    static async getHealthData() {
-        const res = await fetch(`${this.url}/api/heath`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        return await res.json();
-    }
+const BASE_URL = process.env.WEATHER_API_URL || "http://localhost:8000";
 
-    static async getProvinceData() {
-        const res = await fetch(`${this.url}/api/provinces`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        return await res.json();
-    }
+export async function getHealthData() {
+    const res = await fetch(`${BASE_URL}/api/health`, {method: "GET"});
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+}
 
-    static async getMonthData() {
-        const res = await fetch(`${this.url}/api/months`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        return await res.json();
-    }
+export async function getProvinceData() {
+    const res = await fetch(`${BASE_URL}/api/provinces`, {method: "GET"});
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+}
 
-    static async postWeatherData(data: PostWeatherData): Promise<PostWeatherDataResponse> {
-        const res = await fetch(`${this.url}/api/predict`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-        
-        if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        return await res.json();
-    }
+export async function getMonthData() {
+    const res = await fetch(`${BASE_URL}/api/months`, {method: "GET"});
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+}
+
+export async function postWeatherData(
+    data: PostWeatherData
+): Promise<PostWeatherDataResponse> {
+    const res = await fetch(`${BASE_URL}/api/predict`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
 }
