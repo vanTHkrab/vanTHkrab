@@ -1,11 +1,11 @@
 "use client";
 import React from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { getProvinceData } from '@/actions/weather-action';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { MapPin, AlertCircle } from 'lucide-react';
+import {useQuery} from '@tanstack/react-query';
+import {getProvinceData} from '@/actions/weather-action';
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@/components/ui/select';
+import {Skeleton} from '@/components/ui/skeleton';
+import {Alert, AlertDescription} from '@/components/ui/alert';
+import {MapPin, AlertCircle} from 'lucide-react';
 
 interface Province {
     id: number;
@@ -14,15 +14,15 @@ interface Province {
 
 interface ProvinceSelectorProps {
     value?: number;
-    onValueChange: (value: number) => void;
+    onValueChangeAction: (value: number) => void;
     disabled?: boolean;
 }
 
 export const ProvinceSelector: React.FC<ProvinceSelectorProps> = ({
-    value,
-    onValueChange,
-    disabled = false
-}) => {
+                                                                      value,
+                                                                      onValueChangeAction,
+                                                                      disabled = false
+                                                                  }) => {
     const {
         data: provincesResponse,
         isLoading,
@@ -61,7 +61,7 @@ export const ProvinceSelector: React.FC<ProvinceSelectorProps> = ({
                     <MapPin className="w-4 h-4"/>
                     จังหวัด
                 </label>
-                <Skeleton className="h-12 w-full" />
+                <Skeleton className="h-12 w-full"/>
             </div>
         );
     }
@@ -76,7 +76,7 @@ export const ProvinceSelector: React.FC<ProvinceSelectorProps> = ({
                 <Alert className="border-red-200 bg-red-50">
                     <AlertCircle className="h-4 w-4 text-red-600"/>
                     <AlertDescription className="text-red-700">
-                        ไม่สามารถโหลดข้อมูลจังหวัดได้: {error instanceof Error ? error.message : 'Unknown error'}
+                        ไม่สามารถโหลดข้อมูลจังหวัดได้: {error.message}
                         <button
                             onClick={() => refetch()}
                             className="ml-2 underline hover:no-underline"
@@ -101,7 +101,7 @@ export const ProvinceSelector: React.FC<ProvinceSelectorProps> = ({
                     <AlertDescription className="text-yellow-700">
                         ไม่พบข้อมูลจังหวัด
                         <button
-                            onClick={() => refetch()} 
+                            onClick={() => refetch()}
                             className="ml-2 underline hover:no-underline"
                         >
                             ลองใหม่
@@ -118,9 +118,9 @@ export const ProvinceSelector: React.FC<ProvinceSelectorProps> = ({
                 <MapPin className="w-4 h-4"/>
                 จังหวัด
             </label>
-            <Select 
-                value={value?.toString()} 
-                onValueChange={(val) => onValueChange(parseInt(val))}
+            <Select
+                value={value?.toString()}
+                onValueChange={(val) => onValueChangeAction(parseInt(val))}
                 disabled={disabled}
             >
                 <SelectTrigger className="h-12 border-slate-200 hover:border-blue-300 transition-colors">
@@ -129,7 +129,7 @@ export const ProvinceSelector: React.FC<ProvinceSelectorProps> = ({
                 <SelectContent>
                     {provinces.map((province) => (
                         <SelectItem
-                            key={province.id} 
+                            key={province.id}
                             value={province.id.toString()}
                             className="hover:bg-blue-50"
                         >
@@ -144,7 +144,7 @@ export const ProvinceSelector: React.FC<ProvinceSelectorProps> = ({
 
 // Custom hook to get province name by id
 export const useProvinceName = (provinceId: number | null) => {
-    const { data: provincesResponse } = useQuery({
+    const {data: provincesResponse} = useQuery({
         queryKey: ['provinces'],
         queryFn: async () => {
             return await getProvinceData();

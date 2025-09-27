@@ -1,11 +1,11 @@
 "use client";
 import React from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { getMonthData } from '@/actions/weather-action';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Calendar, AlertCircle } from 'lucide-react';
+import {useQuery} from '@tanstack/react-query';
+import {getMonthData} from '@/actions/weather-action';
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@/components/ui/select';
+import {Skeleton} from '@/components/ui/skeleton';
+import {Alert, AlertDescription} from '@/components/ui/alert';
+import {Calendar, AlertCircle} from 'lucide-react';
 
 interface Month {
     value: number;
@@ -14,15 +14,15 @@ interface Month {
 
 interface MonthSelectorProps {
     value?: number;
-    onValueChange: (value: number) => void;
+    onValueChangeAction: (value: number) => void;
     disabled?: boolean;
 }
 
 export const MonthSelector: React.FC<MonthSelectorProps> = ({
-    value,
-    onValueChange,
-    disabled = false
-}) => {
+                                                                value,
+                                                                onValueChangeAction,
+                                                                disabled = false
+                                                            }) => {
     const {
         data: monthsResponse,
         isLoading,
@@ -61,7 +61,7 @@ export const MonthSelector: React.FC<MonthSelectorProps> = ({
                     <Calendar className="w-4 h-4"/>
                     เดือน
                 </label>
-                <Skeleton className="h-12 w-full" />
+                <Skeleton className="h-12 w-full"/>
             </div>
         );
     }
@@ -76,7 +76,7 @@ export const MonthSelector: React.FC<MonthSelectorProps> = ({
                 <Alert className="border-red-200 bg-red-50">
                     <AlertCircle className="h-4 w-4 text-red-600"/>
                     <AlertDescription className="text-red-700">
-                        ไม่สามารถโหลดข้อมูลเดือนได้: {error instanceof Error ? error.message : 'Unknown error'}
+                        ไม่สามารถโหลดข้อมูลเดือนได้: {error.message}
                         <button
                             onClick={() => refetch()}
                             className="ml-2 underline hover:no-underline"
@@ -101,7 +101,7 @@ export const MonthSelector: React.FC<MonthSelectorProps> = ({
                     <AlertDescription className="text-yellow-700">
                         ไม่พบข้อมูลเดือน
                         <button
-                            onClick={() => refetch()} 
+                            onClick={() => refetch()}
                             className="ml-2 underline hover:no-underline"
                         >
                             ลองใหม่
@@ -118,9 +118,9 @@ export const MonthSelector: React.FC<MonthSelectorProps> = ({
                 <Calendar className="w-4 h-4"/>
                 เดือน
             </label>
-            <Select 
-                value={value?.toString()} 
-                onValueChange={(val) => onValueChange(parseInt(val))}
+            <Select
+                value={value?.toString()}
+                onValueChange={(val) => onValueChangeAction(parseInt(val))}
                 disabled={disabled}
             >
                 <SelectTrigger className="h-12 border-slate-200 hover:border-blue-300 transition-colors">
@@ -129,7 +129,7 @@ export const MonthSelector: React.FC<MonthSelectorProps> = ({
                 <SelectContent>
                     {months.map((month) => (
                         <SelectItem
-                            key={month.value} 
+                            key={month.value}
                             value={month.value.toString()}
                             className="hover:bg-blue-50"
                         >
@@ -144,7 +144,7 @@ export const MonthSelector: React.FC<MonthSelectorProps> = ({
 
 // Custom hook to get month name by value
 export const useMonthName = (monthValue: number | null) => {
-    const { data: monthsResponse } = useQuery({
+    const {data: monthsResponse} = useQuery({
         queryKey: ['months'],
         queryFn: async () => {
             return await getMonthData();
