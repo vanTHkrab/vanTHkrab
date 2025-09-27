@@ -1,9 +1,9 @@
-interface PostWeatherData {
+export interface PostWeatherData {
     PROV_ID: number;
     month_id: number;
 }
 
-interface PostWeatherDataResponse {
+export interface PostWeatherDataResponse {
     prediction: number;
     probability: number | null;
     province: {

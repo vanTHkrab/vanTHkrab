@@ -1,6 +1,10 @@
 "use client";
 import React, {useState, useEffect} from 'react';
-import {WeatherAction} from "@/actions/weather-action";
+import {
+    WeatherAction,
+    type PostWeatherDataResponse as PredictionResult,
+    type PostWeatherData
+} from "@/actions/weather-action";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Button} from '@/components/ui/button';
 import {Alert, AlertDescription} from '@/components/ui/alert';
@@ -8,26 +12,8 @@ import {Badge} from '@/components/ui/badge';
 import {Skeleton} from '@/components/ui/skeleton';
 import {Progress} from '@/components/ui/progress';
 import {Cloud, Sun, CloudRain, MapPin, Zap, Info, RefreshCw, CheckCircle, XCircle} from 'lucide-react';
-import { ProvinceSelector, useProvinceName } from '@/components/weather/province-selector';
-import { MonthSelector, useMonthName } from '@/components/weather/month-selector';
-
-interface PredictionResult {
-    prediction: number;
-    probability: number | null;
-    province: {
-        id: number;
-        name: string;
-    };
-    month: {
-        id: number;
-        name: string;
-    };
-    features_used: {
-        province_id: number;
-        month_sin: number;
-        month_cos: number;
-    };
-}
+import {ProvinceSelector, useProvinceName} from '@/components/weather/province-selector';
+import {MonthSelector, useMonthName} from '@/components/weather/month-selector';
 
 const ModernWeatherPage = () => {
     const [selectedProvince, setSelectedProvince] = useState<number | null>(null);
@@ -78,7 +64,7 @@ const ModernWeatherPage = () => {
         }, 300);
 
         try {
-            const data = {
+            const data:PostWeatherData = {
                 PROV_ID: selectedProvince,
                 month_id: selectedMonth,
             };
@@ -134,7 +120,11 @@ const ModernWeatherPage = () => {
                 {/* API Status Alert */}
                 {apiHealthy === null ? (
                     <div className="mb-8 max-w-2xl mx-auto">
-                        <Skeleton className="h-12 w-full bg-white"/>
+                        <Skeleton className="h-12 w-full bg-white">
+                            <div className="text-center text-black font-medium">
+                                กำลังตรวจสอบสถานะ API...
+                            </div>
+                        </Skeleton>
                     </div>
                 ) : (
                     <div className="mb-8 max-w-2xl mx-auto transition-opacity duration-500 opacity-100">
@@ -334,11 +324,13 @@ const ModernWeatherPage = () => {
                                                     <div className="space-y-2 text-sm">
                                                         <div className="flex justify-between">
                                                             <span className="text-slate-600">จังหวัด:</span>
-                                                            <span className="font-medium text-slate-900">{provinceName}</span>
+                                                            <span
+                                                                className="font-medium text-slate-900">{provinceName}</span>
                                                         </div>
                                                         <div className="flex justify-between">
                                                             <span className="text-slate-600">เดือน:</span>
-                                                            <span className="font-medium text-slate-900">{monthName}</span>
+                                                            <span
+                                                                className="font-medium text-slate-900">{monthName}</span>
                                                         </div>
                                                     </div>
                                                 </CardContent>
@@ -350,11 +342,23 @@ const ModernWeatherPage = () => {
                                                     <div className="space-y-2 text-sm">
                                                         <div className="flex justify-between">
                                                             <span className="text-slate-600">Province ID:</span>
-                                                            <span className="font-mono text-slate-900">{selectedProvince}</span>
+                                                            <span
+                                                                className="font-mono text-slate-900">{selectedProvince}</span>
                                                         </div>
                                                         <div className="flex justify-between">
                                                             <span className="text-slate-600">Month ID:</span>
-                                                            <span className="font-mono text-slate-900">{selectedMonth}</span>
+                                                            <span
+                                                                className="font-mono text-slate-900">{selectedMonth}</span>
+                                                        </div>
+                                                        <div className="flex justify-between">
+                                                            <span className="text-slate-600">Month Sin:</span>
+                                                            <span
+                                                                className="font-mono text-slate-900">{prediction.features_used.month_sin.toFixed(4)}</span>
+                                                        </div>
+                                                        <div className="flex justify-between">
+                                                            <span className="text-slate-600">Month Cos:</span>
+                                                            <span
+                                                                className="font-mono text-slate-900">{prediction.features_used.month_cos.toFixed(4)}</span>
                                                         </div>
                                                     </div>
                                                 </CardContent>
