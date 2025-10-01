@@ -1,46 +1,37 @@
-import type {NextRequest} from 'next/server'
-import {NextResponse} from 'next/server'
-import authConfig from "@/auth.config"
-import NextAuth from "next-auth"
-
-const { auth } = NextAuth(authConfig)
-
-export default auth((req) => {
-    // if (!req.auth && req.nextUrl.pathname !== "/login") {
-    //     const newUrl = new URL("/login", req.nextUrl.origin)
-    //     return Response.redirect(newUrl)
-    // }
-})
-
-//
-
-// Middleware to protect routes
-export function middleware(req: NextRequest) {
-    // Check if the user is authenticated
-    const hostname = req.headers.get('host') || ''
-    const subdomain = hostname.split('.')[0]
-
-    if (subdomain === 'admin') {
-        const url = req.nextUrl.clone()
-        url.pathname = `/admin${url.pathname}`
-        return NextResponse.rewrite(url)
-    }
-
-    if (subdomain === 'profile') {
-        const url = req.nextUrl.clone()
-        url.pathname = `/profile${url.pathname}`
-        return NextResponse.rewrite(url)
-    }
-
-    if (subdomain === 'user') {
-        const url = req.nextUrl.clone()
-        url.pathname = `/user${url.pathname}`
-        return NextResponse.rewrite(url)
-    }
-
-    return NextResponse.next()
-}
+import { NextResponse } from "next/server";
+import subdomains from "./subdomains.json";
 
 export const config = {
-    matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
+    matcher: [
+        "/((?!api/|_next/|_static/|_vercel|[\\w-]+\\.\\w+).*)",
+    ],
+};
+
+export default async function middleware(req: Request) {
+    const url = new URL(req.url);
+    const hostname = req.headers.get("host") || "";
+
+    // Define list of allowed domains
+    // (including localhost and your deployed domain)
+    const allowedDomains = ["localhost:3000"];
+
+    // Check if the current hostname is in the list of allowed domains
+    const isAllowedDomain = allowedDomains.some(domain => hostname.includes(domain));
+
+    // Extract the potential subdomain from the URL
+    const subdomain = hostname.split(".")[0];
+
+    // If user is on an allowed domain and it's not a subdomain, allow the request
+    if (isAllowedDomain && !subdomains.some(d => d.subdomain === subdomain)) {
+        return NextResponse.next();
+    }
+
+    const subdomainData = subdomains.find(d => d.subdomain === subdomain);
+
+    if (subdomainData) {
+        // Rewrite the URL to a dynamic path based on the subdomain
+        return NextResponse.rewrite(new URL(`/${subdomain}${url.pathname}`, req.url));
+    }
+
+    return new Response(null, { status: 404 });
 }

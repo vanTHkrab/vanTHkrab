@@ -13,4 +13,3 @@ export class BookController {
         return `This action returns a #${id} book`;
     }
 }
-

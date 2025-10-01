@@ -65,7 +65,7 @@ const ModernWeatherPage = () => {
         }, 300);
 
         try {
-            const data:PostWeatherData = {
+            const data: PostWeatherData = {
                 PROV_ID: selectedProvince,
                 month_id: selectedMonth,
             };
@@ -99,362 +99,214 @@ const ModernWeatherPage = () => {
                     linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)
                 `,
                 backgroundSize: '25px 25px',
-                backgroundAttachment: 'fixed',
-            }}>
-            {/* Container */}
-            <div className="container mx-auto px-4 py-8 max-w-7xl relative z-10">
-
-                {/* Header Section */}
+            }}
+        >
+            <div className="container mx-auto max-w-4xl px-4">
+                {/* Header */}
                 <div className="text-center mb-12">
-                    <div
-                        className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-white to-gray-200 rounded-2xl mb-6 shadow-xl border border-white">
-                        <Cloud className="w-10 h-10 text-black"/>
+                    <div className="flex items-center justify-center gap-3 mb-4">
+                        <div className="p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl">
+                            <Cloud className="h-8 w-8 text-white" />
+                        </div>
+                        <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                            Weather Prediction
+                        </h1>
                     </div>
-                    <h1 className="text-5xl font-bold bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent mb-4">
-                        ระบบทำนายฝน AI
-                    </h1>
-                    <p className="text-xl text-white max-w-2xl mx-auto">
-                        ใช้เทคนิคปัญญาประดิษฐ์ในการทำนายสภาพอากาศ เลือกจังหวัดและเดือนเพื่อได้รับการคาดการณ์ที่แม่นยำ
+                    <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+                        Advanced AI-powered weather prediction system for accurate rainfall forecasting
                     </p>
                 </div>
 
-                {/* API Status Alert */}
-                {apiHealthy === null ? (
-                    <div className="mb-8 max-w-2xl mx-auto">
-                        <Skeleton className="h-12 w-full bg-white">
-                            <div className="text-center text-black font-medium">
-                                กำลังตรวจสอบสถานะ API...
-                            </div>
-                        </Skeleton>
-                    </div>
-                ) : (
-                    <div className="mb-8 max-w-2xl mx-auto transition-opacity duration-500 opacity-100">
-                        {apiHealthy ? (
-                            <Alert className="border-white bg-white shadow-lg">
-                                <CheckCircle className="h-5 w-5 text-green-600"/>
-                                <AlertDescription className="text-black font-medium">
-                                    เชื่อมต่อกับ API ทำนายฝนเรียบร้อยแล้ว
-                                </AlertDescription>
-                            </Alert>
-                        ) : (
-                            <Alert className="border-white bg-white shadow-lg">
-                                <XCircle className="h-5 w-5 text-red-600"/>
-                                <AlertDescription className="text-black font-medium">
-                                    ไม่สามารถเชื่อมต่อกับ API ทำนายฝนได้ กรุณาลองใหม่อีกครั้งในภายหลัง
-                                </AlertDescription>
-                            </Alert>
-                        )}
-                    </div>
-                )}
-
-                <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-
-                    {/* Input Form */}
-                    <div className="xl:col-span-1">
-                        <Card className="shadow-xl bg-white border border-gray-200 h-fit">
-                            <CardHeader className="pb-6">
-                                <div className="flex items-center gap-3">
-                                    <div
-                                        className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
-                                        <MapPin className="w-5 h-5 text-white"/>
-                                    </div>
-                                    <div>
-                                        <CardTitle className="text-slate-900">ข้อมูลการทำนาย</CardTitle>
-                                        <CardDescription className="text-slate-600">
-                                            เลือกตำแหน่งและเวลาที่ต้องการทำนาย
-                                        </CardDescription>
-                                    </div>
-                                </div>
-                            </CardHeader>
-                            <CardContent className="space-y-8">
-
-                                {/* Province Selection */}
-                                <ProvinceSelector
-                                    value={selectedProvince || undefined}
-                                    onValueChangeAction={setSelectedProvince}
-                                    disabled={loading}
-                                />
-
-                                {/* Month Selection */}
-                                <MonthSelector
-                                    value={selectedMonth || undefined}
-                                    onValueChangeAction={setSelectedMonth}
-                                    disabled={loading}
-                                />
-
-                                {/* Selected Values Display */}
-                                {(selectedProvince || selectedMonth) && (
-                                    <div
-                                        className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
-                                        <h4 className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
-                                            <Info className="w-4 h-4"/>
-                                            ข้อมูลที่เลือก
-                                        </h4>
-                                        <div className="space-y-2">
-                                            {selectedProvince && provinceName && (
-                                                <div className="flex items-center gap-2">
-                                                    <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                                                        {provinceName}
-                                                    </Badge>
-                                                </div>
-                                            )}
-                                            {selectedMonth && monthName && (
-                                                <div className="flex items-center gap-2">
-                                                    <Badge variant="secondary"
-                                                           className="bg-indigo-100 text-indigo-800">
-                                                        {monthName}
-                                                    </Badge>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                )}
-
-                                {/* Error Display */}
-                                {error && (
-                                    <Alert className="border-red-200 bg-red-50">
-                                        <XCircle className="h-4 w-4 text-red-600"/>
-                                        <AlertDescription className="text-red-700">{error}</AlertDescription>
-                                    </Alert>
-                                )}
-
-                                {/* Progress Bar */}
-                                {loading && (
-                                    <div className="space-y-2">
-                                        <div className="flex items-center justify-between text-sm text-slate-600">
-                                            <span>กำลังประมวลผล...</span>
-                                            <span>{Math.round(progress)}%</span>
-                                        </div>
-                                        <Progress value={progress} className="h-2"/>
-                                    </div>
-                                )}
-
-                                {/* Predict Button */}
-                                <Button
-                                    onClick={handlePredict}
-                                    disabled={loading || !selectedProvince || !selectedMonth}
-                                    className="w-full h-12 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold shadow-lg transition-all duration-300 hover:shadow-xl"
-                                    size="lg"
-                                >
-                                    {loading ? (
-                                        <div className="flex items-center gap-2">
-                                            <RefreshCw className="w-4 h-4 animate-spin"/>
-                                            กำลังทำนาย...
-                                        </div>
-                                    ) : (
-                                        <div className="flex items-center gap-2">
-                                            <Zap className="w-4 h-4"/>
-                                            ทำนายฝน
-                                        </div>
-                                    )}
-                                </Button>
-                            </CardContent>
-                        </Card>
-                    </div>
-
-                    {/* Result Section */}
-                    <div className="xl:col-span-2">
-                        <Card className="shadow-xl bg-white border border-gray-200 h-fit">
-                            <CardHeader className="pb-6">
-                                <div className="flex items-center gap-3">
-                                    <div
-                                        className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-green-600 rounded-lg flex items-center justify-center">
-                                        <Cloud className="w-5 h-5 text-white"/>
-                                    </div>
-                                    <div>
-                                        <CardTitle className="text-slate-900">ผลการทำนาย</CardTitle>
-                                        <CardDescription className="text-slate-600">
-                                            ผลลัพธ์จากการวิเคราะห์ด้วย AI
-                                        </CardDescription>
-                                    </div>
-                                </div>
-                            </CardHeader>
-                            <CardContent>
-                                {prediction ? (
-                                    <div className="space-y-6">
-
-                                        {/* Main Result Card */}
-                                        <div
-                                            className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${getPredictionColor(prediction.prediction)} p-8 text-white shadow-2xl`}>
-                                            <div className="relative z-10">
-                                                <div className="flex items-center justify-center mb-6">
-                                                    {React.createElement(getPredictionIcon(prediction.prediction), {
-                                                        className: "w-16 h-16 text-white drop-shadow-lg"
-                                                    })}
-                                                </div>
-                                                <h3 className="text-4xl font-bold text-center mb-4">
-                                                    {getPredictionText(prediction.prediction)}
-                                                </h3>
-                                                <p className="text-xl text-center text-white/90 mb-6">
-                                                    {prediction.prediction === 1 ? 'คาดการณ์ว่าจะมีฝนตก' : 'คาดการณ์ว่าจะไม่มีฝน'}
-                                                </p>
-
-                                                {/* Confidence Level */}
-                                                {prediction.probability !== null && (
-                                                    <div className="bg-white/20 rounded-xl p-4 backdrop-blur-sm">
-                                                        <div className="flex justify-between items-center mb-2">
-                                                            <span className="text-white/90">ความเชื่อมั่น</span>
-                                                            <span
-                                                                className="text-2xl font-bold">{(prediction.probability * 100).toFixed(1)}%</span>
-                                                        </div>
-                                                        <div className="w-full bg-white/20 rounded-full h-3">
-                                                            <div
-                                                                className="h-3 bg-white rounded-full transition-all duration-1000 ease-out"
-                                                                style={{width: `${prediction.probability * 100}%`}}
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                )}
-
-                                            </div>
-
-                                            {/* Background Pattern */}
-                                            <div className="absolute inset-0 opacity-10">
-                                                <div
-                                                    className="absolute top-0 right-0 w-32 h-32 rounded-full bg-white transform translate-x-16 -translate-y-16"/>
-                                                <div
-                                                    className="absolute bottom-0 left-0 w-24 h-24 rounded-full bg-white transform -translate-x-12 translate-y-12"/>
-                                            </div>
-                                        </div>
-
-                                        {/* Technical Details */}
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            <Card className="bg-slate-50 border-slate-200">
-                                                <CardContent className="p-4">
-                                                    <h4 className="font-semibold text-slate-700 mb-3">ข้อมูลการทำนาย</h4>
-                                                    <div className="space-y-2 text-sm">
-                                                        <div className="flex justify-between">
-                                                            <span className="text-slate-600">จังหวัด:</span>
-                                                            <span
-                                                                className="font-medium text-slate-900">{provinceName}</span>
-                                                        </div>
-                                                        <div className="flex justify-between">
-                                                            <span className="text-slate-600">เดือน:</span>
-                                                            <span
-                                                                className="font-medium text-slate-900">{monthName}</span>
-                                                        </div>
-                                                    </div>
-                                                </CardContent>
-                                            </Card>
-
-                                            <Card className="bg-slate-50 border-slate-200">
-                                                <CardContent className="p-4">
-                                                    <h4 className="font-semibold text-slate-700 mb-3">ค่าทางเทคนิค</h4>
-                                                    <div className="space-y-2 text-sm">
-                                                        <div className="flex justify-between">
-                                                            <span className="text-slate-600">Province ID:</span>
-                                                            <span
-                                                                className="font-mono text-slate-900">{selectedProvince}</span>
-                                                        </div>
-                                                        <div className="flex justify-between">
-                                                            <span className="text-slate-600">Month ID:</span>
-                                                            <span
-                                                                className="font-mono text-slate-900">{selectedMonth}</span>
-                                                        </div>
-                                                        <div className="flex justify-between">
-                                                            <span className="text-slate-600">Month Sin:</span>
-                                                            <span
-                                                                className="font-mono text-slate-900">{prediction.features_used.month_sin.toFixed(4)}</span>
-                                                        </div>
-                                                        <div className="flex justify-between">
-                                                            <span className="text-slate-600">Month Cos:</span>
-                                                            <span
-                                                                className="font-mono text-slate-900">{prediction.features_used.month_cos.toFixed(4)}</span>
-                                                        </div>
-                                                    </div>
-                                                </CardContent>
-                                            </Card>
-                                        </div>
-
-                                        {/* Reset Button */}
-                                        <Button
-                                            variant="outline"
-                                            onClick={() => {
-                                                setPrediction(null);
-                                                setSelectedProvince(null);
-                                                setSelectedMonth(null);
-                                                setError(null);
-                                            }}
-                                            className="w-full h-12 border-slate-300 hover:bg-slate-50 transition-all duration-300"
-                                        >
-                                            <RefreshCw className="w-4 h-4 mr-2"/>
-                                            ทำนายใหม่
-                                        </Button>
-                                    </div>
-                                ) : (
-                                    <div className="text-center py-16">
-                                        <div
-                                            className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                                            <Cloud className="w-12 h-12 text-slate-400"/>
-                                        </div>
-                                        <h3 className="text-xl font-semibold text-slate-700 mb-2">พร้อมทำนายสภาพอากาศ</h3>
-                                        <p className="text-slate-500 max-w-md mx-auto">
-                                            เลือกจังหวัดและเดือนจากแบบฟอร์มด้านซ้าย เพื่อเริ่มการทำนายด้วย AI
-                                        </p>
-                                    </div>
-                                )}
-                            </CardContent>
-                        </Card>
-                    </div>
-                </div>
-
-                {/* Information Section */}
-                <div className="mt-12">
-                    <Card className="shadow-xl bg-white border border-gray-200">
-                        <CardHeader>
+                {/* API Health Status */}
+                <div className="mb-8">
+                    <Card className="bg-gray-900/50 border-gray-800 backdrop-blur-sm">
+                        <CardContent className="p-4">
                             <div className="flex items-center gap-3">
-                                <div
-                                    className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center">
-                                    <Info className="w-5 h-5 text-white"/>
+                                <div className="flex items-center gap-2">
+                                    {apiHealthy === null ? (
+                                        <RefreshCw className="h-4 w-4 text-gray-400 animate-spin" />
+                                    ) : apiHealthy ? (
+                                        <CheckCircle className="h-4 w-4 text-green-500" />
+                                    ) : (
+                                        <XCircle className="h-4 w-4 text-red-500" />
+                                    )}
+                                    <span className="text-sm font-medium text-gray-300">
+                                        API Status:
+                                    </span>
                                 </div>
-                                <div>
-                                    <CardTitle className="text-slate-900">เกี่ยวกับระบบทำนายฝน AI</CardTitle>
-                                    <CardDescription className="text-slate-600">
-                                        เทคโนลยีและวิธีการทำงานของระบบ
-                                    </CardDescription>
-                                </div>
-                            </div>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                                <div className="space-y-3">
-                                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                                        <MapPin className="w-6 h-6 text-blue-600"/>
-                                    </div>
-                                    <h4 className="font-semibold text-slate-900">ข้อมูลครอบคลุม</h4>
-                                    <ul className="text-sm text-slate-600 space-y-1">
-                                        <li>• ใช้ข้อมูลจากจังหวัดทั่วประเทศไทย</li>
-                                        <li>• ข้อมูลสภาพอากาศหลายปีย้อนหลัง</li>
-                                        <li>• อัพเดทข้อมูลอย่างต่อเนื่อง</li>
-                                    </ul>
-                                </div>
-                                <div className="space-y-3">
-                                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                                        <Zap className="w-6 h-6 text-green-600"/>
-                                    </div>
-                                    <h4 className="font-semibold text-slate-900">เทคโนลยี AI</h4>
-                                    <ul className="text-sm text-slate-600 space-y-1">
-                                        <li>• วิเคราะห์รูปแบบข้อมูลทางสถิติ</li>
-                                        <li>• จำลองรูปแบบเชิงฤดูกาล</li>
-                                        <li>• โมเดลการเรียนรู้ขั้นสูง</li>
-                                    </ul>
-                                </div>
-                                <div className="space-y-3">
-                                    <div
-                                        className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                                        <Cloud className="w-6 h-6 text-purple-600"/>
-                                    </div>
-                                    <h4 className="font-semibold text-slate-900">ผลลัพธ์</h4>
-                                    <ul className="text-sm text-slate-600 space-y-1">
-                                        <li>• ทำนายผลลัพธ์เป็น 0 (ไม่มีฝน) หรือ 1 (ฝนตก)</li>
-                                        <li>• ระดับความเชื่อมั่นในการทำนาย</li>
-                                        <li>• ข้อมูลทางเทคนิคประกอบ</li>
-                                    </ul>
-                                </div>
+                                <Badge
+                                    variant={apiHealthy === null ? "secondary" : apiHealthy ? "default" : "destructive"}
+                                    className={apiHealthy === null ? "bg-gray-700" : apiHealthy ? "bg-green-600" : "bg-red-600"}
+                                >
+                                    {apiHealthy === null ? "Checking..." : apiHealthy ? "Online" : "Offline"}
+                                </Badge>
                             </div>
                         </CardContent>
                     </Card>
                 </div>
+
+                {/* Input Controls */}
+                <div className="grid md:grid-cols-2 gap-6 mb-8">
+                    <Card className="bg-gray-900/50 border-gray-800 backdrop-blur-sm">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2 text-white">
+                                <MapPin className="h-5 w-5 text-blue-400" />
+                                เลือกจังหวัด
+                            </CardTitle>
+                            <CardDescription className="text-gray-400">
+                                Select the province for weather prediction
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <ProvinceSelector
+                                value={selectedProvince}
+                                onValueChangeAction={setSelectedProvince}
+                            />
+                        </CardContent>
+                    </Card>
+
+                    <Card className="bg-gray-900/50 border-gray-800 backdrop-blur-sm">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2 text-white">
+                                <Cloud className="h-5 w-5 text-purple-400" />
+                                เลือกเดือน
+                            </CardTitle>
+                            <CardDescription className="text-gray-400">
+                                Select the month for prediction
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <MonthSelector
+                                value={selectedMonth}
+                                onValueChangeAction={setSelectedMonth}
+                            />
+                        </CardContent>
+                    </Card>
+                </div>
+
+                {/* Predict Button */}
+                <div className="text-center mb-8">
+                    <Button
+                        onClick={handlePredict}
+                        disabled={loading || !selectedProvince || !selectedMonth || !apiHealthy}
+                        size="lg"
+                        className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 text-lg font-semibold rounded-xl shadow-lg transform transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                    >
+                        {loading ? (
+                            <div className="flex items-center gap-2">
+                                <RefreshCw className="h-5 w-5 animate-spin" />
+                                Predicting...
+                            </div>
+                        ) : (
+                            <div className="flex items-center gap-2">
+                                <Zap className="h-5 w-5" />
+                                Predict Weather
+                            </div>
+                        )}
+                    </Button>
+                </div>
+
+                {/* Progress Bar */}
+                {loading && (
+                    <div className="mb-8">
+                        <Card className="bg-gray-900/50 border-gray-800 backdrop-blur-sm">
+                            <CardContent className="p-6">
+                                <div className="space-y-3">
+                                    <div className="flex justify-between text-sm text-gray-400">
+                                        <span>Processing prediction...</span>
+                                        <span>{Math.round(progress)}%</span>
+                                    </div>
+                                    <Progress value={progress} className="h-2" />
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </div>
+                )}
+
+                {/* Error Display */}
+                {error && (
+                    <Alert className="mb-8 bg-red-900/20 border-red-800 text-red-400">
+                        <XCircle className="h-4 w-4" />
+                        <AlertDescription>{error}</AlertDescription>
+                    </Alert>
+                )}
+
+                {/* Prediction Results */}
+                {prediction && !loading && (
+                    <Card className="bg-gray-900/50 border-gray-800 backdrop-blur-sm mb-8">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2 text-white">
+                                <Info className="h-5 w-5 text-green-400" />
+                                Prediction Results
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                            {/* Main Prediction */}
+                            <div className={`text-center p-8 rounded-2xl bg-gradient-to-r ${getPredictionColor(prediction.prediction)} text-white`}>
+                                <div className="flex justify-center mb-4">
+                                    {React.createElement(getPredictionIcon(prediction.prediction), {
+                                        className: "h-16 w-16"
+                                    })}
+                                </div>
+                                <h3 className="text-3xl font-bold mb-2">
+                                    {getPredictionText(prediction.prediction)}
+                                </h3>
+                                <p className="text-lg opacity-90">
+                                    {provinceName} - {monthName}
+                                </p>
+                                {prediction.probability && (
+                                    <p className="text-sm opacity-75 mt-2">
+                                        Confidence: {(prediction.probability * 100).toFixed(1)}%
+                                    </p>
+                                )}
+                            </div>
+
+                            {/* Details Grid */}
+                            <div className="grid md:grid-cols-2 gap-4">
+                                <div className="space-y-4">
+                                    <h4 className="font-semibold text-white">Location Details</h4>
+                                    <div className="space-y-2 text-sm text-gray-300">
+                                        <div className="flex justify-between p-3 bg-gray-800/50 rounded-lg">
+                                            <span>Province:</span>
+                                            <span className="font-medium">{prediction.province.name}</span>
+                                        </div>
+                                        <div className="flex justify-between p-3 bg-gray-800/50 rounded-lg">
+                                            <span>Month:</span>
+                                            <span className="font-medium">{prediction.month.name}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-4">
+                                    <h4 className="font-semibold text-white">Model Features</h4>
+                                    <div className="space-y-2 text-sm text-gray-300">
+                                        <div className="flex justify-between p-3 bg-gray-800/50 rounded-lg">
+                                            <span>Province ID:</span>
+                                            <span className="font-medium">{prediction.features_used.province_id}</span>
+                                        </div>
+                                        <div className="flex justify-between p-3 bg-gray-800/50 rounded-lg">
+                                            <span>Month Sin:</span>
+                                            <span className="font-medium">{prediction.features_used.month_sin.toFixed(4)}</span>
+                                        </div>
+                                        <div className="flex justify-between p-3 bg-gray-800/50 rounded-lg">
+                                            <span>Month Cos:</span>
+                                            <span className="font-medium">{prediction.features_used.month_cos.toFixed(4)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                )}
+
+                {/* Footer Info */}
+                <Card className="bg-gray-900/30 border-gray-800 backdrop-blur-sm">
+                    <CardContent className="p-6 text-center">
+                        <p className="text-gray-400 text-sm">
+                            Powered by advanced machine learning algorithms for accurate weather prediction
+                        </p>
+                    </CardContent>
+                </Card>
             </div>
         </div>
     );
