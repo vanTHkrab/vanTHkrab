@@ -3,16 +3,15 @@
 <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&background=FFFFFF00&center=true&vCenter=true&width=435&lines=Hi%2C++%F0%9F%91%8BI'm+Audsadawut+Nakthungtao" alt="Typing SVG" /></a>
 </h1>
 
-<div style="width: 100%; align-content: center; text-align: center;">
-<div style="font-size: 16px; line-height: 1.5; max-width: 600px; margin: 0 auto;">
+<div align="center">
 🎓 Computer Engineering & Artificial Intelligence student.</br>
 💻 Software Engineering & Web Developer.</br>
 📊 Interested in Algorithms, Adaptive Systems, and System Design
 I enjoy building practical web applications and real-world systems, from full-stack web platforms to intelligent systems that combine
 mathematical concepts and software engineering.
 </div>
-
-<div style="width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)); gap: 10px; justify-items: center; margin-top: 20px;">
+</br>
+<div align="center">
 <img src="https://techstack-generator.vercel.app/java-icon.svg" alt="icon" width="50" height="50" />
 <img src="https://techstack-generator.vercel.app/python-icon.svg" alt="icon" width="50" height="50" />
 <img src="https://techstack-generator.vercel.app/ts-icon.svg" alt="icon" width="50" height="50" />
@@ -24,7 +23,7 @@ mathematical concepts and software engineering.
 <img src="https://techstack-generator.vercel.app/github-icon.svg" alt="icon" width="50" height="50" />
 <img src="https://techstack-generator.vercel.app/restapi-icon.svg" alt="icon" width="50" height="50" />
 </div>
-</div>
+</br>
 
 <div style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 20px;">
 <div style="flex: 1;">
@@ -95,7 +94,7 @@ mathematical concepts and software engineering.
 
 <img src="https://media.tenor.com/zhIZszouG8QAAAAi/line-divider.gif" width="100%" height="2px"/>
 
-<section>
+<section align="center">
 <h3 align="center">
  <a href="https://github.com/vanthkrab">
 <img src="https://img1.picmix.com/output/stamp/original/9/8/7/3/473789_94059.gif" width="22" height="22" align="left" />
@@ -111,7 +110,7 @@ mathematical concepts and software engineering.
    <img align="center" src="https://github-readme-stats.vercel.app/api?username=vanTHkrab&show_icons=true&line_height=30&rank_icon=github&show=discussions_answered&theme=algolia" alt="Walid's github stats"/>
 </a>
 </div>
-
+</br>
 <div style="text-align: center; margin-top: 20px;">
 <a href="https://github.com/vanthkrab">
   <img align="center" src="https://github-readme-stats.vercel.app/api/top-langs/?username=vanTHkrab&langs_count=8&layout=compact&theme=dark" />
