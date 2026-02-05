@@ -1,122 +1,136 @@
-<img align="left" src="https://user-images.githubusercontent.com/65187002/144930161-2f783401-8d27-4fdf-a2f7-cc0ba32f1f1f.gif" width="21%" style="display:inline;"><img align="right" src="https://user-images.githubusercontent.com/65187002/144930161-2f783401-8d27-4fdf-a2f7-cc0ba32f1f1f.gif" width="21%" style="display:inline;">
-<h1 align = center>
-<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&background=FFFFFF00&center=true&vCenter=true&width=435&lines=Hi%2C++%F0%9F%91%8BI'm+Audsadawut+Nakthungtao" alt="Typing SVG" /></a>
-</h1>
+<!-- Header Banner -->
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=180&section=header&text=Audsadawut%20Nakthungtao&fontSize=42&fontColor=fff&animation=twinkling&fontAlignY=32"/>
 
-<div style="width: 100%; align-content: center; text-align: center;">
-<div style="font-size: 16px; line-height: 1.5; max-width: 600px; margin: 0 auto;">
-🎓 Computer Engineering & Artificial Intelligence student.</br>
-💻 Software Engineering & Web Developer.</br>
-📊 Interested in Algorithms, Adaptive Systems, and System Design
-I enjoy building practical web applications and real-world systems, from full-stack web platforms to intelligent systems that combine
-mathematical concepts and software engineering.
-</div>
+<div align="center">
+  
+<!-- Typing Animation -->
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1000&color=6AD3F7&center=true&vCenter=true&random=false&width=600&lines=Full-Stack+Developer+%F0%9F%92%BB;Computer+Engineering+Student+%F0%9F%8E%93;Building+Modern+Web+Applications+%F0%9F%9A%80;Always+Learning+New+Technologies+%E2%9C%A8)](https://git.io/typing-svg)
 
-<div style="width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)); gap: 10px; justify-items: center; margin-top: 20px;">
-<img src="https://techstack-generator.vercel.app/java-icon.svg" alt="icon" width="50" height="50" />
-<img src="https://techstack-generator.vercel.app/python-icon.svg" alt="icon" width="50" height="50" />
-<img src="https://techstack-generator.vercel.app/ts-icon.svg" alt="icon" width="50" height="50" />
-<img src="https://techstack-generator.vercel.app/js-icon.svg" alt="icon" width="50" height="50" />
-<img src="https://techstack-generator.vercel.app/react-icon.svg" alt="icon" width="50" height="50" />
-<img src="https://techstack-generator.vercel.app/mysql-icon.svg" alt="icon" width="50" height="50" />
-<img src="https://techstack-generator.vercel.app/graphql-icon.svg" alt="icon" width="50" height="50" />
-<img src="https://techstack-generator.vercel.app/docker-icon.svg" alt="icon" width="50" height="50" />
-<img src="https://techstack-generator.vercel.app/github-icon.svg" alt="icon" width="50" height="50" />
-<img src="https://techstack-generator.vercel.app/restapi-icon.svg" alt="icon" width="50" height="50" />
-</div>
-</div>
-
-<div style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 20px;">
-<div style="flex: 1;">
-<img align="right" alt="Coding" width="400" src="https://user-images.githubusercontent.com/74038190/229223263-cf2e4b07-2615-4f87-9c38-e37600f8381a.gif">
-</div>
-
-<div style="flex: 1;">
-👨‍🎓 My name is Audsadawut Nakthungtao, a Computer Engineering student
-
-💻 I’ve been learning programming for 3+ years
-
-🌐 I’m interested in Full-stack Development
-
-⚛️ My favorite technologies are React, Next.js, and Node.js
-
-🚀 I’m always eager to learn new tools and improve my skills
-
-📫 How to reach me: <a href="mailto:audsadawut.nak@gmail.com">audsadawut.nak@gmail.com</a>
-
-👨‍💻 Here you’ll find my projects and experiments
-</div>
-</div>
-
-<a href="https://github.com/vanthkrab">
-<img src="https://media.tenor.com/zhIZszouG8QAAAAi/line-divider.gif" width="100%" height="2px"/>
-</a>
-
-<section>
-<h2 align="center">🛠️ Tech Stack</h2>
-
-- Backend
-
+<!-- Profile Views & Social Badges -->
 <p>
-    <img src="https://skillicons.dev/icons?i=php,laravel,nodejs,nestjs" />
+  <img src="https://komarev.com/ghpvc/?username=vanTHkrab&label=Profile%20Views&color=0e75b6&style=for-the-badge" alt="Profile Views" />
+  <a href="mailto:audsadawut.nak@gmail.com">
+    <img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Gmail"/>
+  </a>
+  <a href="https://github.com/vanthkrab">
+    <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/>
+  </a>
 </p>
 
-- Frontend
+</div>
 
-<p>
-    <img src="https://skillicons.dev/icons?i=ts,js,react,nextjs,tailwind" />
-</p>
+<!-- About Me Section -->
+<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
 
-- Database
+<table>
+<tr>
+<td width="50%">
+  
+### 🧑‍💻 About Me
 
-<p>
-    <img src="https://skillicons.dev/icons?i=mysql,postgresql" />
-</p>
+```javascript
+const audsadawut = {
+  pronouns: "he" | "him",
+  education: "Computer Engineering & AI",
+  experience: "3+ years in programming",
+  currentFocus: "Full-Stack Development",
+  funFact: "I debug with console.log 😄"
+};
+```
 
-- ORMs
+- 🎓 Computer Engineering & AI Student
+- 💻 Passionate about **Web Development**
+- 🌱 Currently learning **System Design**
+- ⚡ Love building **Real-world Applications**
+- 🎯 Goal: Become a **Senior Developer**
 
-<p>
-    <img src="https://skillicons.dev/icons?i=prisma" />
-</p>
+</td>
+<td width="50%">
+  
+<img src="https://user-images.githubusercontent.com/74038190/229223263-cf2e4b07-2615-4f87-9c38-e37600f8381a.gif" width="100%"/>
 
-- Cloud Servers
+</td>
+</tr>
+</table>
 
-<p>
-    <img src="https://skillicons.dev/icons?i=aws,firebase,cloudflare" />
-</p>
+<!-- Tech Stack Section -->
+<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
 
-- Tools
+<h2 align="center">⚡ Tech Stack</h2>
 
-<p>
-<img src="https://skillicons.dev/icons?i=git,github,docker,figma,idea,vscode,postman,linux" />
-</p>
+<div align="center">
+  
+### 🔹 Languages
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
 
-</section>
+### 🔹 Frontend
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
-<img src="https://media.tenor.com/zhIZszouG8QAAAAi/line-divider.gif" width="100%" height="2px"/>
+### 🔹 Backend
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)
+![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
 
-<section>
-<h3 align="center">
- <a href="https://github.com/vanthkrab">
-<img src="https://img1.picmix.com/output/stamp/original/9/8/7/3/473789_94059.gif" width="22" height="22" align="left" />
-    </a> <a href="https://github.com/vanthkrab">
-  <img src="https://img1.picmix.com/output/stamp/original/9/8/7/3/473789_94059.gif" width="22" height="22" align="right" />
-   </a>
-</h3>
+### 🔹 Database & ORM
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white)
+
+### 🔹 Cloud & DevOps
+![AWS](https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazonwebservices&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
+![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)
+
+### 🔹 Tools
+![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
+![VS Code](https://img.shields.io/badge/VS_Code-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white)
+![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
+![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)
+![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
+
+</div>
+
+<!-- GitHub Stats Section -->
+<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
 
 <h2 align="center">📊 GitHub Stats</h2>
-<div style="text-align: center;">
 
-<a href="https://github.com/vanthkrab">
-   <img align="center" src="https://github-readme-stats.vercel.app/api?username=vanTHkrab&show_icons=true&line_height=30&rank_icon=github&show=discussions_answered&theme=algolia" alt="Walid's github stats"/>
-</a>
+<div align="center">
+  <!-- <img src="https://github-readme-stats.vercel.app/api?username=vanTHkrab&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0D1117&title_color=6AD3F7&icon_color=6AD3F7" width="49%" alt="GitHub Stats"/> -->
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=vanTHkrab&theme=tokyonight&hide_border=true&background=0D1117&stroke=6AD3F7&ring=6AD3F7&fire=FF6B6B&currStreakLabel=6AD3F7" width="100%" alt="GitHub Streak"/>
 </div>
 
-<div style="text-align: center; margin-top: 20px;">
-<a href="https://github.com/vanthkrab">
-  <img align="center" src="https://github-readme-stats.vercel.app/api/top-langs/?username=vanTHkrab&langs_count=8&layout=compact&theme=dark" />
-</a>
-</div>
-</section>
+<br/>
 
-<img src="https://media.tenor.com/zhIZszouG8QAAAAi/line-divider.gif" width="100%" height="2px" />
+<div align="center">
+  <!-- <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=vanTHkrab&layout=donut-vertical&theme=tokyonight&hide_border=true&bg_color=0D1117&title_color=6AD3F7" width="40%" alt="Top Languages"/> -->
+</div>
+
+<br/>
+
+<!-- Activity Graph -->
+<div align="center">
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=vanTHkrab&bg_color=0D1117&color=6AD3F7&line=6AD3F7&point=FFFFFF&area=true&hide_border=true" width="95%" alt="Activity Graph"/>
+</div>
+
+<!-- Trophy Section -->
+<div align="center">
+  <!-- <img src="https://github-profile-trophy.vercel.app/?username=vanTHkrab&theme=tokyonight&no-frame=true&no-bg=true&column=7&margin-w=15" width="100%" alt="GitHub Trophies"/> -->
+</div>
+
+<!-- Snake Animation -->
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/vanTHkrab/vanTHkrab/output/github-snake-dark.svg" />
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/vanTHkrab/vanTHkrab/output/github-snake.svg" />
+  <!-- <img alt="github-snake" src="https://raw.githubusercontent.com/vanTHkrab/vanTHkrab/output/github-snake-dark.svg" /> -->
+</picture>
+
+<!-- Footer -->
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=120&section=footer"/>
