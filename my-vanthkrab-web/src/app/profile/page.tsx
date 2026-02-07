@@ -122,20 +122,20 @@ export default function ProfilePage() {
       </Section>
 
       {/* Canvas Section - Lazy loaded */}
-      <Suspense
-        fallback={
-          <div className="py-20 flex items-center justify-center">
-            <div className="animate-pulse text-muted-foreground">
-              Loading visualization...
-            </div>
-          </div>
-        }
-      >
-        <Section className="relative h-100 md:h-150 lg:h-100">
-          {/*<BackendCanvas />*/}
-            <BackendBeam />
-        </Section>
-      </Suspense>
+      {/*<Suspense*/}
+      {/*  fallback={*/}
+      {/*    <div className="py-20 flex items-center justify-center">*/}
+      {/*      <div className="animate-pulse text-muted-foreground">*/}
+      {/*        Loading visualization...*/}
+      {/*      </div>*/}
+      {/*    </div>*/}
+      {/*  }*/}
+      {/*>*/}
+      {/*  <Section className="relative h-100 md:h-150 lg:h-100">*/}
+      {/*    /!*<BackendCanvas />*!/*/}
+      {/*      <BackendBeam />*/}
+      {/*  </Section>*/}
+      {/*</Suspense>*/}
 
       {/* Footer */}
       <ProfileFooter />
