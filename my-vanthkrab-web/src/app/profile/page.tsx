@@ -14,7 +14,6 @@ import {
   Contact,
   Education,
 } from "@/components/profile";
-import {BackendBeam} from "@/components/profile/BackendBeam";
 
 // Lazy load the heavy canvas component
 const BackendCanvas = dynamic(

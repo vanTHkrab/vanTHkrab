@@ -47,8 +47,7 @@ export function Contact() {
               Let&apos;s Connect
             </h3>
             <p className="text-muted-foreground max-w-lg mx-auto">
-              Interested in working together or have a question? I&apos;m always
-              open to discussing new opportunities, interesting projects, or just
+              I&apos;m always open to discussing new opportunities, interesting projects, or just
               having a chat about technology.
             </p>
           </div>
@@ -61,7 +60,7 @@ export function Contact() {
             className="flex items-center justify-center gap-2 text-sm text-muted-foreground mb-8"
           >
             <MapPin className="w-4 h-4" />
-            <span>Based in Bangkok, Thailand • Available for Remote Work</span>
+            <span>Based in Suratthina, Thailand • Available for Remote Work Or in Bangkok, Thailand</span>
           </motion.div>
 
           {/* CTA Button */}
@@ -117,20 +116,20 @@ export function Contact() {
           </motion.div>
 
           {/* Availability status */}
-          <motion.div
-            initial={shouldReduceMotion ? {} : { opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.8 }}
-            className="mt-12 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
-            </span>
-            <span className="text-sm text-green-600 dark:text-green-400">
-              Currently available for new opportunities
-            </span>
-          </motion.div>
+          {/*<motion.div*/}
+          {/*  initial={shouldReduceMotion ? {} : { opacity: 0 }}*/}
+          {/*  animate={isInView ? { opacity: 1 } : {}}*/}
+          {/*  transition={{ duration: 0.5, delay: 0.8 }}*/}
+          {/*  className="mt-12 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20"*/}
+          {/*>*/}
+          {/*  <span className="relative flex h-2 w-2">*/}
+          {/*    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75" />*/}
+          {/*    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />*/}
+          {/*  </span>*/}
+          {/*  <span className="text-sm text-green-600 dark:text-green-400">*/}
+          {/*    Currently available for new opportunities*/}
+          {/*  </span>*/}
+          {/*</motion.div>*/}
         </motion.div>
       </div>
     </section>
