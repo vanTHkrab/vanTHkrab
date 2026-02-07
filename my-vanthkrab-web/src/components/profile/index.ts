@@ -1,0 +1,11 @@
+export { ProfileHero } from "./ProfileHero";
+export { AboutMe } from "./AboutMe";
+export { Skills } from "./Skills";
+export { Experience } from "./Experience";
+export { Projects } from "./Projects";
+export { Certificates } from "./Certificates";
+export { Timeline } from "./Timeline";
+export { Contact } from "./Contact";
+export { Education } from "./Education";
+export { BackendCanvas } from "./BackendCanvas";
+export { ThemeToggle } from "./ThemeToggle";
