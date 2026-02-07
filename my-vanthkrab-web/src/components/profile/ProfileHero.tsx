@@ -11,6 +11,7 @@ import TextType from "@/components/TextType";
 import Image from "next/image";
 import LightRays from "@/components/LightRays";
 import LogoTechStack from "@/components/profile/logo-tech-stack";
+import ShinyText from "@/components/ShinyText";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -73,11 +74,11 @@ export function ProfileHero() {
         </div>
 
       {/* Background gradient */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl opacity-50" />
-      </div>
+      {/*<div className="absolute inset-0 -z-10">*/}
+      {/*  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />*/}
+      {/*  <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />*/}
+      {/*  <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl opacity-50" />*/}
+      {/*</div>*/}
 
       {/* Theme toggle - fixed position */}
       {/*<div className="absolute top-6 right-6">*/}
@@ -88,7 +89,7 @@ export function ProfileHero() {
         variants={shouldReduceMotion ? {} : containerVariants}
         initial="hidden"
         animate="visible"
-        className="max-w-3xl text-center"
+        className="max-w-4xl w-full flex flex-col items-center justify-center text-center z-10"
       >
         {/* Avatar placeholder */}
         <motion.div
@@ -109,21 +110,24 @@ export function ProfileHero() {
           variants={shouldReduceMotion ? {} : itemVariants}
           className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4"
         >
-            <DecryptedText
-                text="Audsadawut Nakthungtao"
-                animateOn="view"
-                revealDirection="start"
-                sequential
-                speed={75}
-                maxIterations={1}
-                useOriginalCharsOnly={false}
-            />
+          <ShinyText
+            text="Audsadawut Nakthungtao"
+            speed={3}
+            delay={0}
+            color="#b5b5b5"
+            shineColor="#ffffff"
+            spread={60}
+            direction="left"
+            yoyo={true}
+            pauseOnHover={false}
+            disabled={false}
+          />
         </motion.h1>
 
         {/* Role */}
         <motion.div
           variants={shouldReduceMotion ? {} : itemVariants}
-          className="mb-4"
+          className="mb-4 text-center"
         >
             <TextType
                 text={["Full-Stack Developer", "Backend Engineer"]}
@@ -140,12 +144,12 @@ export function ProfileHero() {
         </motion.div>
 
         {/* Tagline */}
-          <motion.p
-              variants={shouldReduceMotion ? {} : itemVariants}
-              className="text-base sm:text-lg text-muted-foreground max-w-2xl mb-6 text-center break-words">
-              Building scalable backend systems and elegant interfaces.
-              Passionate about distributed systems, API design, and developer experience.
-          </motion.p>
+        <motion.p
+            variants={shouldReduceMotion ? {} : itemVariants}
+            className="text-base sm:text-lg text-muted-foreground max-w-2xl mb-6 text-center break-words">
+            Building scalable backend systems and elegant interfaces.
+            Passionate about distributed systems, API design, and developer experience.
+        </motion.p>
 
         {/* Location */}
         <motion.div
