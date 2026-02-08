@@ -80,10 +80,10 @@ export function ProfileHero() {
       {/*  <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl opacity-50" />*/}
       {/*</div>*/}
 
-      {/* Theme toggle - fixed position */}
-      {/*<div className="absolute top-6 right-6">*/}
-      {/*  <ThemeToggle />*/}
-      {/*</div>*/}
+       {/*Theme toggle - fixed position */}
+      <div className="absolute top-6 right-6">
+        <ThemeToggle />
+      </div>
 
       <motion.div
         variants={shouldReduceMotion ? {} : containerVariants}
