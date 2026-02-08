@@ -1,7 +1,7 @@
 "use server";
 
 // API Configuration
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API_URL = process.env.API_CNN_URL || "http://localhost:8000";
 
 // Types
 export interface ModelInfo {
