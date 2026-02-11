@@ -1,0 +1,42 @@
+MIT License
+
+Copyright (c) 2026 Audsadawut Nakthungtao
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+--------------------------------------------------------------------------------
+
+EXCEPTIONS AND ADDITIONAL TERMS
+
+1. SOFTWARE CODE: Only the source code of the Next.js application and
+   associated configuration files in this repository are licensed under
+   the MIT License.
+
+2. PERSONAL ASSETS: All files located within the `assets/private/` directory
+   and its subdirectories—including but not limited to Resume (PDF),
+   Certificates, Personal Photos, and Portfolio content—are "All Rights Reserved".
+   These materials are for viewing purposes only. No part of these assets
+   may be copied, modified, or redistributed without explicit written
+   permission from the copyright owner (Audsadawut Nakthungtao).
+
+3. THIRD-PARTY TRADEMARKS & LOGOS: Any third-party logos (e.g., framework logos,
+   operating system icons) or trademarks displayed in this repository
+   are the property of their respective owners. Their inclusion here is
+   for informational and portfolio purposes under "Fair Use" and is NOT
+   covered by the MIT License.

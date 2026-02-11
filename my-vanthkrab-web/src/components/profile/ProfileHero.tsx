@@ -46,7 +46,7 @@ export function ProfileHero() {
 
   const downloadResumeButton = () => {
     const link = document.createElement('a');
-    link.href = '/assets/pdf/resume.pdf';
+    link.href = '/assets/private/pdf/resume.pdf';
     link.download = 'Audsadawut_Nakthungtao_Resume.pdf';
     document.body.appendChild(link);
     link.click();
