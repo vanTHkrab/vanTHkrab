@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { useState, useCallback, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useCallback, useRef, useEffect } from "react";
+import { motion } from "framer-motion";
 import { Upload, Image as ImageIcon, Brain, Loader2, CheckCircle2, AlertCircle, Camera, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -39,6 +39,12 @@ export default function CNNPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  // Hydration guard
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Check camera availability on mount
   React.useEffect(() => {
@@ -289,65 +295,62 @@ export default function CNNPage() {
         </motion.div>
 
         {/* Server Status Alert */}
-        <AnimatePresence>
-          {serverStatus !== "online" && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="mb-6"
+        {mounted && serverStatus !== "online" && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="mb-6"
+          >
+            <Alert
+              variant={serverStatus === "offline" ? "destructive" : "default"}
+              className={
+                serverStatus === "checking"
+                  ? "border-blue-500/50 bg-blue-500/10"
+                  : serverStatus === "starting"
+                    ? "border-yellow-500/50 bg-yellow-500/10"
+                    : ""
+              }
             >
-              <Alert
-                variant={serverStatus === "offline" ? "destructive" : "default"}
-                className={
-                  serverStatus === "checking"
-                    ? "border-blue-500/50 bg-blue-500/10"
-                    : serverStatus === "starting"
-                      ? "border-yellow-500/50 bg-yellow-500/10"
-                      : ""
-                }
-              >
-                {serverStatus === "checking" && (
-                  <Loader2 className="h-4 w-4 animate-spin" />
+              {serverStatus === "checking" && (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              )}
+              {serverStatus === "starting" && (
+                <Loader2 className="h-4 w-4 animate-spin text-yellow-600" />
+              )}
+              {serverStatus === "offline" && <AlertCircle className="h-4 w-4" />}
+              <AlertDescription className="flex items-center justify-between">
+                <span>{serverMessage}</span>
+                {(serverStatus === "offline" || serverStatus === "starting") && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleCheckServerHealth}
+                    className="ml-4"
+                  >
+                    Retry
+                  </Button>
                 )}
-                {serverStatus === "starting" && (
-                  <Loader2 className="h-4 w-4 animate-spin text-yellow-600" />
-                )}
-                {serverStatus === "offline" && <AlertCircle className="h-4 w-4" />}
-                <AlertDescription className="flex items-center justify-between">
-                  <span>{serverMessage}</span>
-                  {(serverStatus === "offline" || serverStatus === "starting") && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={handleCheckServerHealth}
-                      className="ml-4"
-                    >
-                      Retry
-                    </Button>
-                  )}
-                </AlertDescription>
-              </Alert>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              </AlertDescription>
+            </Alert>
+          </motion.div>
+        )}
 
         {/* Error Alert */}
-        <AnimatePresence>
-          {error && serverStatus === "online" && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="mb-6"
-            >
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {mounted && error && serverStatus === "online" && (
+          <motion.div
+            key={error}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="mb-6"
+          >
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          </motion.div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Column - Upload & Model Selection */}
@@ -399,21 +402,21 @@ export default function CNNPage() {
 
                 {/* File Upload */}
                 <div>
-                  {/*<div className="flex items-center justify-between mb-2">*/}
-                  {/*  <label className="text-sm font-medium">Upload Image</label>*/}
-                  {/*  {hasCamera && !showCamera && (*/}
-                  {/*    <Button*/}
-                  {/*      variant="ghost"*/}
-                  {/*      size="sm"*/}
-                  {/*      onClick={startCamera}*/}
-                  {/*      disabled={serverStatus !== "online"}*/}
-                  {/*      className="h-8"*/}
-                  {/*    >*/}
-                  {/*      <Camera className="w-4 h-4 mr-2" />*/}
-                  {/*      Use Camera*/}
-                  {/*    </Button>*/}
-                  {/*  )}*/}
-                  {/*</div>*/}
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-sm font-medium">Upload Image</label>
+                    {hasCamera && !showCamera && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={startCamera}
+                        disabled={serverStatus !== "online"}
+                        className="h-8"
+                      >
+                        <Camera className="w-4 h-4 mr-2" />
+                        Use Camera
+                      </Button>
+                    )}
+                  </div>
 
                   {/* Camera View */}
                   {showCamera && (
@@ -541,113 +544,110 @@ export default function CNNPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <AnimatePresence mode="wait">
-                  {!prediction && !isUploading && (
-                    <motion.div
-                      key="empty"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="flex flex-col items-center justify-center py-12 text-center"
-                    >
-                      <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
-                        <ImageIcon className="w-8 h-8 text-muted-foreground" />
+                {/* Empty state */}
+                {!prediction && !isUploading && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="flex flex-col items-center justify-center py-12 text-center"
+                  >
+                    <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
+                      <ImageIcon className="w-8 h-8 text-muted-foreground" />
+                    </div>
+                    <p className="text-muted-foreground">
+                      Upload an image to see predictions
+                    </p>
+                  </motion.div>
+                )}
+
+                {/* Loading state */}
+                {isUploading && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="flex flex-col items-center justify-center py-12"
+                  >
+                    <Loader2 className="w-12 h-12 text-primary animate-spin mb-4" />
+                    <p className="text-muted-foreground">
+                      Processing your image...
+                    </p>
+                  </motion.div>
+                )}
+
+                {/* Results state */}
+                {prediction && !isUploading && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="space-y-6"
+                  >
+                    {/* Top Prediction */}
+                    <div className="p-4 rounded-xl bg-primary/5 border border-primary/20">
+                      <div className="flex items-center gap-2 mb-2">
+                        <CheckCircle2 className="w-5 h-5 text-primary" />
+                        <span className="text-sm font-medium text-primary">
+                          Top Prediction
+                        </span>
                       </div>
-                      <p className="text-muted-foreground">
-                        Upload an image to see predictions
-                      </p>
-                    </motion.div>
-                  )}
-
-                  {isUploading && (
-                    <motion.div
-                      key="loading"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="flex flex-col items-center justify-center py-12"
-                    >
-                      <Loader2 className="w-12 h-12 text-primary animate-spin mb-4" />
-                      <p className="text-muted-foreground">
-                        Processing your image...
-                      </p>
-                    </motion.div>
-                  )}
-
-                  {prediction && (
-                    <motion.div
-                      key="results"
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 0.3 }}
-                      className="space-y-6"
-                    >
-                      {/* Top Prediction */}
-                      <div className="p-4 rounded-xl bg-primary/5 border border-primary/20">
-                        <div className="flex items-center gap-2 mb-2">
-                          <CheckCircle2 className="w-5 h-5 text-primary" />
-                          <span className="text-sm font-medium text-primary">
-                            Top Prediction
-                          </span>
-                        </div>
-                        <h3 className="text-2xl font-bold mb-2">
-                          {prediction.predicted_class}
-                        </h3>
-                        <div className="flex items-center gap-3">
-                          <Progress
-                            value={prediction.confidence * 100}
-                            className="flex-1 h-2"
-                          />
-                          <Badge variant="secondary">
-                            {(prediction.confidence * 100).toFixed(1)}%
-                          </Badge>
-                        </div>
+                      <h3 className="text-2xl font-bold mb-2">
+                        {prediction.predicted_class}
+                      </h3>
+                      <div className="flex items-center gap-3">
+                        <Progress
+                          value={prediction.confidence * 100}
+                          className="flex-1 h-2"
+                        />
+                        <Badge variant="secondary">
+                          {(prediction.confidence * 100).toFixed(1)}%
+                        </Badge>
                       </div>
+                    </div>
 
-                      <Separator />
+                    <Separator />
 
-                      {/* All Probabilities */}
-                      <div>
-                        <h4 className="text-sm font-medium mb-4">
-                          All Predictions
-                        </h4>
-                        <div className="space-y-3">
-                          {prediction.probabilities
-                            .sort((a, b) => b.confidence - a.confidence)
-                            .map((prob, idx) => (
-                              <motion.div
-                                key={prob.class_name}
-                                initial={{ opacity: 0, x: -10 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: idx * 0.05 }}
-                                className="space-y-2"
-                              >
-                                <div className="flex items-center justify-between text-sm">
-                                  <span className="font-medium">
-                                    {prob.class_name}
-                                  </span>
-                                  <span className="text-muted-foreground">
-                                    {(prob.confidence * 100).toFixed(1)}%
-                                  </span>
-                                </div>
-                                <Progress
-                                  value={prob.confidence * 100}
-                                  className="h-1.5"
-                                />
-                              </motion.div>
-                            ))}
-                        </div>
+                    {/* All Probabilities */}
+                    <div>
+                      <h4 className="text-sm font-medium mb-4">
+                        All Predictions
+                      </h4>
+                      <div className="space-y-3">
+                        {prediction.probabilities
+                          .sort((a, b) => b.confidence - a.confidence)
+                          .map((prob, idx) => (
+                            <motion.div
+                              key={prob.class_name}
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: idx * 0.05 }}
+                              className="space-y-2"
+                            >
+                              <div className="flex items-center justify-between text-sm">
+                                <span className="font-medium">
+                                  {prob.class_name}
+                                </span>
+                                <span className="text-muted-foreground">
+                                  {(prob.confidence * 100).toFixed(1)}%
+                                </span>
+                              </div>
+                              <Progress
+                                value={prob.confidence * 100}
+                                className="h-1.5"
+                              />
+                            </motion.div>
+                          ))}
                       </div>
+                    </div>
 
-                      {/* Model Info */}
-                      <div className="pt-4 border-t text-xs text-muted-foreground">
-                        <p>Model: {prediction.model_name}</p>
-                        <p className="mt-1">ID: {prediction.model_id}</p>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                    {/* Model Info */}
+                    <div className="pt-4 border-t text-xs text-muted-foreground">
+                      <p>Model: {prediction.model_name}</p>
+                      <p className="mt-1">ID: {prediction.model_id}</p>
+                    </div>
+                  </motion.div>
+                )}
               </CardContent>
             </Card>
           </motion.div>

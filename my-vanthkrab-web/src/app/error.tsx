@@ -98,7 +98,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
                                             <br />
                                             <strong>Digest:</strong> {error.digest}
                                         </>
-                                    )}
+                                    )}  
                                 </AlertDescription>
                             </Alert>
                         )}
