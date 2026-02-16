@@ -47,25 +47,33 @@ export default function CNNPage() {
   }, []);
 
   // Check camera availability on mount
-  React.useEffect(() => {
-    checkCameraAvailability();
-  }, []);
+  useEffect(() => {
+    if (mounted) {
+      checkCameraAvailability();
+    }
+  }, [mounted]);
 
   // Check server health on mount
-  React.useEffect(() => {
-    handleCheckServerHealth();
-  }, []);
+  useEffect(() => {
+    if (mounted) {
+      handleCheckServerHealth();
+    }
+  }, [mounted]);
 
   // Fetch available models after server is online
-  React.useEffect(() => {
-    if (serverStatus === "online") {
+  useEffect(() => {
+    if (mounted && serverStatus === "online") {
       handleFetchModels();
     }
-  }, [serverStatus]);
+  }, [mounted, serverStatus]);
 
   // Camera functions
   const checkCameraAvailability = async () => {
     try {
+      if (typeof navigator === "undefined" || !navigator.mediaDevices?.enumerateDevices) {
+        setHasCamera(false);
+        return;
+      }
       const devices = await navigator.mediaDevices.enumerateDevices();
       const videoDevices = devices.filter((device) => device.kind === "videoinput");
       setHasCamera(videoDevices.length > 0);
@@ -77,6 +85,10 @@ export default function CNNPage() {
 
   const startCamera = async () => {
     try {
+      if (!navigator.mediaDevices?.getUserMedia) {
+        setError("Camera is not supported on this device/browser.");
+        return;
+      }
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: "environment" },
       });
