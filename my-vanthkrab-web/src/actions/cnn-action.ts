@@ -94,13 +94,15 @@ export async function uploadImage(formData: FormData): Promise<{ url?: string; e
       body: formData,
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      throw new Error("Failed to upload image");
+      throw new Error(`Upload failed: ${data.error || "Unknown error"}`);
     }
 
-    const data = await response.json();
     return { url: data.url };
   } catch (err) {
+    console.error("Error uploading image:", err);
     return {
       error: err instanceof Error ? err.message : "Failed to upload image",
     };

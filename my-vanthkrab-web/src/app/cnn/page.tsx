@@ -281,11 +281,10 @@ export default function CNNPage() {
             <Brain className="w-8 h-8 text-primary" />
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">
-            Image Classification
+            Image Classification BP Monitor
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Upload an image and let our AI models identify what&apos;s in it. Select a model
-            and get instant predictions with confidence scores.
+            Upload an image of a blood pressure monitor and select a model to get instant classification results with confidence scores.
           </p>
         </motion.div>
 
@@ -400,21 +399,21 @@ export default function CNNPage() {
 
                 {/* File Upload */}
                 <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <label className="text-sm font-medium">Upload Image</label>
-                    {hasCamera && !showCamera && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={startCamera}
-                        disabled={serverStatus !== "online"}
-                        className="h-8"
-                      >
-                        <Camera className="w-4 h-4 mr-2" />
-                        Use Camera
-                      </Button>
-                    )}
-                  </div>
+                  {/*<div className="flex items-center justify-between mb-2">*/}
+                  {/*  <label className="text-sm font-medium">Upload Image</label>*/}
+                  {/*  {hasCamera && !showCamera && (*/}
+                  {/*    <Button*/}
+                  {/*      variant="ghost"*/}
+                  {/*      size="sm"*/}
+                  {/*      onClick={startCamera}*/}
+                  {/*      disabled={serverStatus !== "online"}*/}
+                  {/*      className="h-8"*/}
+                  {/*    >*/}
+                  {/*      <Camera className="w-4 h-4 mr-2" />*/}
+                  {/*      Use Camera*/}
+                  {/*    </Button>*/}
+                  {/*  )}*/}
+                  {/*</div>*/}
 
                   {/* Camera View */}
                   {showCamera && (
@@ -654,55 +653,55 @@ export default function CNNPage() {
           </motion.div>
         </div>
 
-        {/* Info Cards */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12"
-        >
-          <Card className="border-border/50 bg-card/50">
-            <CardHeader className="pb-3">
-              <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mb-2">
-                <Upload className="w-5 h-5 text-blue-500" />
-              </div>
-              <CardTitle className="text-base">Easy Upload</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                Drag and drop or click to upload. Supports PNG, JPG, and WEBP formats.
-              </p>
-            </CardContent>
-          </Card>
+        {/*/!* Info Cards *!/*/}
+        {/*<motion.div*/}
+        {/*  initial={{ opacity: 0, y: 20 }}*/}
+        {/*  animate={{ opacity: 1, y: 0 }}*/}
+        {/*  transition={{ duration: 0.5, delay: 0.4 }}*/}
+        {/*  className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12"*/}
+        {/*>*/}
+        {/*  <Card className="border-border/50 bg-card/50">*/}
+        {/*    <CardHeader className="pb-3">*/}
+        {/*      <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mb-2">*/}
+        {/*        <Upload className="w-5 h-5 text-blue-500" />*/}
+        {/*      </div>*/}
+        {/*      <CardTitle className="text-base">Easy Upload</CardTitle>*/}
+        {/*    </CardHeader>*/}
+        {/*    <CardContent>*/}
+        {/*      <p className="text-sm text-muted-foreground">*/}
+        {/*        Drag and drop or click to upload. Supports PNG, JPG, and WEBP formats.*/}
+        {/*      </p>*/}
+        {/*    </CardContent>*/}
+        {/*  </Card>*/}
 
-          <Card className="border-border/50 bg-card/50">
-            <CardHeader className="pb-3">
-              <div className="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center mb-2">
-                <Brain className="w-5 h-5 text-green-500" />
-              </div>
-              <CardTitle className="text-base">Multiple Models</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                Choose from various pre-trained models for different classification tasks.
-              </p>
-            </CardContent>
-          </Card>
+        {/*  <Card className="border-border/50 bg-card/50">*/}
+        {/*    <CardHeader className="pb-3">*/}
+        {/*      <div className="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center mb-2">*/}
+        {/*        <Brain className="w-5 h-5 text-green-500" />*/}
+        {/*      </div>*/}
+        {/*      <CardTitle className="text-base">Multiple Models</CardTitle>*/}
+        {/*    </CardHeader>*/}
+        {/*    <CardContent>*/}
+        {/*      <p className="text-sm text-muted-foreground">*/}
+        {/*        Choose from various pre-trained models for different classification tasks.*/}
+        {/*      </p>*/}
+        {/*    </CardContent>*/}
+        {/*  </Card>*/}
 
-          <Card className="border-border/50 bg-card/50">
-            <CardHeader className="pb-3">
-              <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center mb-2">
-                <CheckCircle2 className="w-5 h-5 text-purple-500" />
-              </div>
-              <CardTitle className="text-base">Instant Results</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                Get predictions in seconds with detailed confidence scores for each class.
-              </p>
-            </CardContent>
-          </Card>
-        </motion.div>
+        {/*  <Card className="border-border/50 bg-card/50">*/}
+        {/*    <CardHeader className="pb-3">*/}
+        {/*      <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center mb-2">*/}
+        {/*        <CheckCircle2 className="w-5 h-5 text-purple-500" />*/}
+        {/*      </div>*/}
+        {/*      <CardTitle className="text-base">Instant Results</CardTitle>*/}
+        {/*    </CardHeader>*/}
+        {/*    <CardContent>*/}
+        {/*      <p className="text-sm text-muted-foreground">*/}
+        {/*        Get predictions in seconds with detailed confidence scores for each class.*/}
+        {/*      </p>*/}
+        {/*    </CardContent>*/}
+        {/*  </Card>*/}
+        {/*</motion.div>*/}
       </div>
     </div>
   );
