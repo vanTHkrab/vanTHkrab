@@ -21,6 +21,7 @@ export interface PredictionResponse {
   predicted_class: string;
   confidence: number;
   probabilities: PredictionResult[];
+  gradcam_url?: string | null;
 }
 
 export interface HealthCheckResponse {

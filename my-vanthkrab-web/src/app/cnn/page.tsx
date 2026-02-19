@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useState, useCallback, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Upload, Image as ImageIcon, Brain, Loader2, CheckCircle2, AlertCircle, Camera, X } from "lucide-react";
+import { Upload, Image as ImageIcon, Brain, Loader2, CheckCircle2, AlertCircle, Camera, X, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -652,6 +652,37 @@ export default function CNNPage() {
                           ))}
                       </div>
                     </div>
+
+                    {/* Grad-CAM Heatmap */}
+                    {prediction.gradcam_url && (
+                      <>
+                        <Separator />
+                        <motion.div
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.3, delay: 0.2 }}
+                        >
+                          <div className="flex items-center gap-2 mb-3">
+                            <Eye className="w-4 h-4 text-primary" />
+                            <h4 className="text-sm font-medium">
+                              Grad-CAM Heatmap
+                            </h4>
+                          </div>
+                          <p className="text-xs text-muted-foreground mb-3">
+                            Highlighted regions show where the model focused to make its prediction.
+                          </p>
+                          <div className="relative w-full aspect-square rounded-lg overflow-hidden border border-border/50 bg-muted">
+                            <Image
+                              src={prediction.gradcam_url}
+                              alt="Grad-CAM heatmap visualization"
+                              fill
+                              className="object-contain"
+                              unoptimized
+                            />
+                          </div>
+                        </motion.div>
+                      </>
+                    )}
 
                     {/* Model Info */}
                     <div className="pt-4 border-t text-xs text-muted-foreground">
