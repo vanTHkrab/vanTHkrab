@@ -157,7 +157,7 @@ export function ProfileHero() {
           className="flex items-center justify-center gap-2 text-sm text-muted-foreground mb-8"
         >
           <MapPin className="w-4 h-4" />
-          <span>Suratthina, Thailand</span>
+          <span>Surat Thani, Thailand</span>
         </motion.div>
 
         {/* CTA Buttons */}

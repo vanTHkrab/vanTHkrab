@@ -60,7 +60,7 @@ export function Contact() {
             className="flex items-center justify-center gap-2 text-sm text-muted-foreground mb-8"
           >
             <MapPin className="w-4 h-4" />
-            <span>Based in Suratthina, Thailand • Available for Remote Work Or in Bangkok, Thailand</span>
+            <span>Based in Surat Thani, Thailand • Available for Remote Work Or in Bangkok, Thailand</span>
           </motion.div>
 
           {/* CTA Button */}
