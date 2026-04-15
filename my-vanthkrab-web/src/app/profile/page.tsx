@@ -1,3 +1,10 @@
+/**
+ * This not a main file profile page, main profile page that renders on the root path. 
+ * Just for testing and development purpose, to make sure that the profile page is working properly.
+ * The main profile page will be rendered on the root path, and this file will be removed later.
+ */
+
+
 "use client";
 
 import React, { Suspense } from "react";
